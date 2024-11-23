@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmSelectionButton = document.getElementById('confirm-selection-button');
     const paymentForm = document.getElementById('payment-form');
 
+    //Server communication part:
+    const runJavaTestButton = document.getElementById('runJavaTestButton');
+
     let selectedSeats = [];
     let currentMovie = null;
     let currentTheater = null;
@@ -286,5 +289,26 @@ document.addEventListener('DOMContentLoaded', () => {
         purchasedTicket = null; // Reset ticket details
         receiptSection.classList.add('hidden');
         theaterSelectionSection.classList.remove('hidden');
+    });
+
+    //Server communication test part:
+    runJavaTestButton.addEventListener('click', () => {
+    // Send a request to the server.js
+        fetch('http://localhost:3000/TestProgram')
+            .then(response => {
+                // Processing Response
+                if (!response.ok) {
+                    throw new Error('Network Response Failure');
+                }
+                return response.text();  // can use text(), json(), blob(), etc.
+            })
+            .then(data => {
+                document.getElementById('output').textContent = data;
+                console.log(data);  // Processing of acquired web content
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('output').textContent = 'Error occurred while running Java program.';
+            });
     });
 });
