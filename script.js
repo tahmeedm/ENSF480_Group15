@@ -10,21 +10,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupSuccess = document.getElementById('signup-success');
     const signinSuccess = document.getElementById('signin-success');
     const theaterSelectionSection = document.getElementById('theater-selection-section');
+    const searchBarSection = document.getElementById('search-bar-section');
+    const movieSearchInput = document.getElementById('movie-search');
     const moviesSection = document.getElementById('movies-section');
     const seatSelectionSection = document.getElementById('seat-selection-section');
     const paymentSection = document.getElementById('payment-section');
+    const receiptSection = document.getElementById('receipt-section');
     const theaterList = document.getElementById('theater-list');
     const movieList = document.getElementById('movie-list');
     const seatMap = document.getElementById('seat-map');
-    const confirmSelectionButton = document.getElementById('confirm-selection-button');
-    const paymentForm = document.getElementById('payment-form');
     const totalPriceDisplay = document.getElementById('total-price');
     const finalPriceDisplay = document.getElementById('final-price');
+    const receiptDetails = document.getElementById('receipt-details');
+    const cancelTicketButton = document.getElementById('cancel-ticket-button');
+    const confirmSelectionButton = document.getElementById('confirm-selection-button');
+    const paymentForm = document.getElementById('payment-form');
 
     let selectedSeats = [];
     let currentMovie = null;
     let currentTheater = null;
     let isRegisteredUser = false;
+    let purchasedTicket = null; // Stores ticket details after purchase
+    const totalSeats = 100;
+    let RUSeatsBooked = 0; // Tracks RU seat bookings
     const TICKET_COST = 15; // Cost per seat
 
     // Debug helper
@@ -36,9 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         signupSection.classList.add('hidden');
         signinSection.classList.add('hidden');
         theaterSelectionSection.classList.add('hidden');
+        searchBarSection.classList.add('hidden');
         moviesSection.classList.add('hidden');
         seatSelectionSection.classList.add('hidden');
         paymentSection.classList.add('hidden');
+        receiptSection.classList.add('hidden');
     };
 
     // Handle Ordinary User Selection
@@ -147,13 +157,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadMoviesForTheater = (theaterId) => {
         const filteredMovies = movies.filter(movie => movie.theaterId === theaterId);
         movieList.innerHTML = filteredMovies.map(movie => `
-            <div class="movie-card">
+            <div class="movie-card" data-movie-name="${movie.name.toLowerCase()}">
                 <h3>${movie.name}</h3>
                 <p>Showtimes: ${movie.showtimes.join(", ")}</p>
                 <button onclick="selectMovie(${movie.id})">Select</button>
             </div>
         `).join('');
+        searchBarSection.classList.remove('hidden'); // Show search bar
     };
+
+    // Movie Search Functionality
+    movieSearchInput.addEventListener('input', () => {
+        const query = movieSearchInput.value.toLowerCase();
+        document.querySelectorAll('.movie-card').forEach(card => {
+            const movieName = card.getAttribute('data-movie-name');
+            card.style.display = movieName.includes(query) ? 'block' : 'none';
+        });
+    });
 
     // Theater selection handler
     window.selectTheater = (id) => {
@@ -206,16 +226,65 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please select at least one seat.');
             return;
         }
+
+        if (isRegisteredUser && RUSeatsBooked + selectedSeats.length > totalSeats * 0.1) {
+            alert('RU seat limit exceeded. Only 10% of the seats can be booked before public announcements.');
+            return;
+        }
+
+        if (isRegisteredUser) RUSeatsBooked += selectedSeats.length;
+
         hideAllSections();
         paymentSection.classList.remove('hidden');
         finalPriceDisplay.textContent = `Final Price: $${selectedSeats.length * TICKET_COST}`;
     });
 
+    // Payment and Ticket Receipt
     paymentForm.addEventListener('submit', (event) => {
         event.preventDefault();
         log('Payment Submitted');
-        alert('Payment successful!');
+
+        purchasedTicket = {
+            movie: currentMovie.name,
+            theater: currentTheater.name,
+            seats: selectedSeats,
+            totalCost: selectedSeats.length * TICKET_COST,
+            purchaseTime: new Date(),
+        };
+
+        receiptDetails.innerHTML = `
+            <p><strong>Movie:</strong> ${purchasedTicket.movie}</p>
+            <p><strong>Theater:</strong> ${purchasedTicket.theater}</p>
+            <p><strong>Seats:</strong> ${purchasedTicket.seats.join(', ')}</p>
+            <p><strong>Total Cost:</strong> $${purchasedTicket.totalCost}</p>
+            <p><strong>Purchase Time:</strong> ${purchasedTicket.purchaseTime}</p>
+        `;
+
         hideAllSections();
+        receiptSection.classList.remove('hidden');
+    });
+
+    // Cancellation Logic
+    cancelTicketButton.addEventListener('click', () => {
+        if (!purchasedTicket) return alert('No ticket to cancel!');
+
+        const currentTime = new Date();
+        const timeDiff = currentTime - new Date(purchasedTicket.purchaseTime);
+        const hoursDiff = timeDiff / (1000 * 60 * 60); // Convert ms to hours
+
+        if (hoursDiff > 72) {
+            alert('Cancellation not allowed beyond 72 hours of purchase.');
+            return;
+        }
+
+        let refundAmount = purchasedTicket.totalCost;
+        if (!isRegisteredUser) {
+            refundAmount -= (refundAmount * 0.15); // 15% admin fee for ordinary users
+        }
+
+        alert(`Ticket canceled. Refund: $${refundAmount.toFixed(2)}`);
+        purchasedTicket = null; // Reset ticket details
+        receiptSection.classList.add('hidden');
         theaterSelectionSection.classList.remove('hidden');
     });
 });
