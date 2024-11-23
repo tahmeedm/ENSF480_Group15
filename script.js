@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Server communication part:
     const runJavaTestButton = document.getElementById('runJavaTestButton');
+    const TestInput = document.getElementById('Test-input');
+    const TestInputButton = document.getElementById('TestInputButton');
 
     let selectedSeats = [];
     let currentMovie = null;
@@ -295,6 +297,34 @@ document.addEventListener('DOMContentLoaded', () => {
     runJavaTestButton.addEventListener('click', () => {
     // Send a request to the server.js
         fetch('http://localhost:3000/TestProgram')
+            .then(response => {
+                // Processing Response
+                if (!response.ok) {
+                    throw new Error('Network Response Failure');
+                }
+                return response.text();  // can use text(), json(), blob(), etc.
+            })
+            .then(data => {
+                document.getElementById('output').textContent = data;
+                console.log(data);  // Processing of acquired web content
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('output').textContent = 'Error occurred while running Java program.';
+            });
+    });
+
+    TestInputButton.addEventListener('click', () => {
+        requestInput = TestInput.value
+        // Send a request to the server.js
+        fetch('http://localhost:3000/TestProgram',{
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'  // Tell the server that the request is JSON
+            },
+            body: JSON.stringify({ requestInput})
+            // body: "Debug1."
+        })
             .then(response => {
                 // Processing Response
                 if (!response.ok) {
