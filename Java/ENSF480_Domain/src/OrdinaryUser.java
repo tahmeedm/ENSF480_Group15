@@ -1,8 +1,29 @@
 
-public class OrdinaryUser {
+public class OrdinaryUser extends User {
 
-	public OrdinaryUser() {
-		// TODO Auto-generated constructor stub
+	private String adminFeeExipirationDate;
+	private bool hasAdminFee;
+
+	public OrdinaryUser(String name, String email, String address, PaymentInfo paymentInfo,
+			String adminFeeExipirationDate, boolean hasAdminFee) {
+		super(name, email, address, paymentInfo);
+		this.adminFeeExipirationDate = adminFeeExipirationDate;
+		this.hasAdminFee = hasAdminFee;
 	}
 
+	public String getAdminFeeExipirationDate() {
+		return adminFeeExipirationDate;
+	}
+
+	public void setAdminFeeExipirationDate(String adminFeeExipirationDate) {
+		this.adminFeeExipirationDate = adminFeeExipirationDate;
+	}
+
+	public boolean isHasAdminFee() {
+		return hasAdminFee;
+	}
+
+	public void setHasAdminFee(boolean hasAdminFee) {
+		this.hasAdminFee = hasAdminFee;
+	}
 }
