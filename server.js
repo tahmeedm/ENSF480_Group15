@@ -59,8 +59,6 @@ app.post('/RegisteredUser', (req, res) => {//This is the test URL for running Te
   console.log('Running /RegisteredUser');
   const {modeType, email, address, paymentInfo, password, username } = req.body;
 
-  console.log(`ModeType is: ${modeType}`);
-  console.log(`Input is: ${modeType || 'null'} ${email || 'null'} ${address || 'null'} ${paymentInfo || 'null'} ${password || 'null'} ${username || 'null'}`);
   if (!modeType) {
     return res.status(400).send('No inputData provided');
   }

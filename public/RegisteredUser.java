@@ -30,9 +30,18 @@ public class RegisteredUser  {
 				
 				System.out.println(response);
 			}
+			if (modeType.equals("signUp")){
+				String response = "Success!\n" +
+									"email:" + email + "\n" +
+									"address:" + address + "\n" +
+									"paymentInfo:" + paymentInfo + "\n" +
+									"password:" + password + "\n" +
+									"username:" + username;
+				
+				System.out.println(response);
+			}
 			else{
 				System.out.println(modeType);
-				System.out.println(email);
 				System.out.println("Error: Mode Wrong.");
 				return;
 			}
