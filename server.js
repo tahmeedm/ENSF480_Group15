@@ -55,6 +55,33 @@ app.post('/TestProgram', (req, res) => {//This is the test URL for running TestP
   });
 });
 
+app.post('/RegisteredUser', (req, res) => {//This is the test URL for running TestProgram.class URL:http://localhost:3000/RegisteredUser
+  console.log('Running /RegisteredUser');
+  const {modeType, email, address, paymentInfo, password, username } = req.body;
+
+  console.log(`ModeType is: ${modeType}`);
+  console.log(`Input is: ${modeType || 'null'} ${email || 'null'} ${address || 'null'} ${paymentInfo || 'null'} ${password || 'null'} ${username || 'null'}`);
+  if (!modeType) {
+    return res.status(400).send('No inputData provided');
+  }
+  // Executing a Java Program
+  // path: ./ENSF480_Domain/bin use public for test.
+  exec(`java -cp ./public RegisteredUser ${modeType || 'null'} ${email || 'null'} ${address || 'null'} ${paymentInfo || 'null'} ${password || 'null'} ${username || 'null'}`, (err, stdout, stderr) => {//This is the command input, and will send output to client.
+    if (err) {
+      res.status(500).send('Error executing Java file: ' + err);
+      return;
+    }
+    if (stderr) {
+      res.status(500).send('stderr: ' + stderr);
+      return;
+    }
+
+    // Returns the output of a Java program
+    res.status(200).send(stdout);
+    // res.status(200).json({ message: 'Java process started' });
+  });
+});
+
 // Start Server.
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

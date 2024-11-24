@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show Sign In Form
     document.getElementById('signin-button').addEventListener('click', () => {
         log('Sign In Button Clicked');
+
         hideAllSections();
         signinSection.classList.remove('hidden');
     });
@@ -118,20 +119,80 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('signin-email').value;
         const password = document.getElementById('signin-password').value;
 
-        // Simulated credential check
-        if (email && password) {
-            signinSuccess.classList.remove('hidden');
-            signinForm.reset();
+        // requestInput = TestInput.value
+        let modeType = "signIn"
+        // let email = window.email
+        let address = null
+        let paymentInfo = null
+        // let password = window.password
+        let username = null
+        var loginStatus = false
+        // Send a request to the server.js
+        fetch('http://localhost:3000/RegisteredUser',{
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'  // Tell the server that the request is JSON
+            },
+            body: JSON.stringify({ modeType, email, address, paymentInfo, password, username })
+            // body: "Debug1."
+        })
+            .then(response => {
+                // Processing Response
+                if (!response.ok) {
+                    throw new Error('Network Response Failure');
+                }
+                return response.text();  // can use text(), json(), blob(), etc.
+            })
+            .then(data => {
+                console.log(data);
+                const lines = data.split('\n');
+            
+            // Loop through each line and extract relevant data
+            lines.forEach(line => {
+                if (line.startsWith('Success!')){
+                    loginStatus = true
+                }
+                if (line.startsWith('email:')) {
+                    window.Email = line.split(':')[1].trim();  // Extract the email after 'email:'
+                } else if (line.startsWith('address:')) {
+                    window.Address = line.split(':')[1].trim();  // Extract the address after 'address:'
+                } else if (line.startsWith('paymentInfo:')) {
+                    window.PaymentInfo = line.split(':')[1].trim();  // Extract paymentInfo after 'paymentInfo:'
+                } else if (line.startsWith('password:')) {
+                    window.Password = line.split(':')[1].trim();  // Extract password after 'password:'
+                } else if (line.startsWith('username:')) {
+                    window.Username = line.split(':')[1].trim();  // Extract username after 'username:'
+                }
+            });
 
-            // Redirect to Theater Selection after success
-            setTimeout(() => {
-                hideAllSections();
-                theaterSelectionSection.classList.remove('hidden');
-                loadTheaters();
-            }, 2000);
-        } else {
-            alert('Invalid credentials! Backend integration required.');
-        }
+            // Log the window. data
+            console.log("Email: ", window.Email);
+            console.log("Address: ", window.Address);
+            console.log("Payment Info: ", window.PaymentInfo);
+            console.log("Password: ", window.Password);
+            console.log("Username: ", window.Username);
+            document.getElementById('output').textContent = data;
+            // console.log(data);  // Processing of acquired web content
+            // Simulated credential check
+            if (loginStatus) {
+                signinSuccess.classList.remove('hidden');
+                signinForm.reset();
+    
+                // Redirect to Theater Selection after success
+                setTimeout(() => {
+                    hideAllSections();
+                    theaterSelectionSection.classList.remove('hidden');
+                    loadTheaters();
+                }, 2000);
+            } else {
+                alert('Invalid credentials! Backend integration required.');
+            }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('output').textContent = 'Error occurred while running Java program.';
+            });
+        
     });
 
     // Theater data
