@@ -1,0 +1,93 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+section {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+/* Buttons */
+button {
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Hidden elements */
+.hidden {
+    display: none;
+}
+
+/* Movie list grid */
+#movie-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.movie-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.movie-card button {
+    margin-top: 10px;
+}
+
+/* Seat map styling */
+#seat-map {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.seat {
+    width: 30px;
+    height: 30px;
+    background-color: green;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.seat.selected {
+    background-color: orange;
+}
+
+.seat.taken {
+    background-color: red;
+    cursor: not-allowed;
+}
+
+/* Price display styling */
+#total-price, #final-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 10px;
+}
