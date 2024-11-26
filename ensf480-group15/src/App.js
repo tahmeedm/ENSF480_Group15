@@ -1,110 +1,118 @@
-import './styles.css';
-// import SignInForm from './components/SignInForm';
+import React, { useState } from 'react';
+import SignSelection from './components/SignSelection.tsx';
+import SignInForm from './components/SignInForm.tsx';
+import SignUpForm from './components/SignUpForm.tsx';
+import UserSelection from './components/UserSelection.tsx';
+import TheaterSelect from './components/TheaterSelect.tsx';
+import MovieSelection from './components/MovieSelection.tsx';
+import SeatForm from './components/SeatForm.tsx';
+import PaymentForm from './components/PaymentForm.tsx';
+import ReceiptDisplay from './components/ReceiptDisplay.tsx';
 
+const App = () => {
+  const [isRegisteredUser, setIsRegisteredUser] = useState(null);
+  const [isSignUp, setSignUpIn] = useState(null);
+  const [isSignedIn, setSignedIn] = useState(false);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [currentMovie, setCurrentMovie] = useState(null);
+  const [currentTheater, setCurrentTheater] = useState(null);
+  const [purchasedTicket, setPurchasedTicket] = useState(null);
+  const totalSeats = 100;
+  const TICKET_COST = 15;
 
-function App() {
+  const [theaters, setTheaters] = useState([
+    { id: 1, name: "AcmePlex Downtown" },
+    { id: 2, name: "AcmePlex Mall" },
+    { id: 3, name: "AcmePlex Suburbs" },
+  ]);
 
+  const [movies, setMovies] = useState([
+    { id: 1, name: 'Inception', theaterId: 1, showtimes: ['12:00 PM', '3:00 PM', '6:00 PM'] },
+    { id: 2, name: 'The Matrix', theaterId: 2, showtimes: ['1:00 PM', '4:00 PM', '7:00 PM'] },
+    { id: 3, name: 'Interstellar', theaterId: 3, showtimes: ['2:00 PM', '5:00 PM', '8:00 PM'] },
+    { id: 4, name: 'Avengers: Endgame', theaterId: 1, showtimes: ['11:00 AM', '2:30 PM', '6:30 PM'] },
+    { id: 5, name: 'The Dark Knight', theaterId: 2, showtimes: ['12:30 PM', '3:30 PM', '7:30 PM'] },
+  ]);
+
+  const [paymentInfo, setPaymentInfo] = useState(null);
+
+  const [filteredMovies, setFilteredMovies] = useState(movies);
+
+  const handleUserSelection = (isRegistered) => {
+    setIsRegisteredUser(isRegistered);
+  };
+
+  const handleSignSelection = (isSignUp) => {
+    setSignUpIn(isSignUp);
+  };
+
+  const handleSignIn = (isSignedIn) => {
+    setSignedIn(isSignedIn);
+  };
+
+  const handleTheaterSelection = (theater) => {
+    setCurrentTheater(theater);
+  };
+
+  const handleMovieSelection = (movie) => {
+    setCurrentMovie(movie);
+  };
+
+  const handleSeatSelection = (seats) => {
+    setSelectedSeats(seats);
+  };
+
+  const handleTicketPurchase = (ticketDetails) => {
+    setPurchasedTicket(ticketDetails);
+  };
+
+  // Function to reset all fields
+  const resetFields = () => {
+    setIsRegisteredUser(null);
+    setSignUpIn(false);
+    setSignedIn(false);
+    setSelectedSeats([]);
+    setCurrentMovie(null);
+    setCurrentTheater(null);
+    setPurchasedTicket(null);
+    setPaymentInfo(null);
+  };
 
 
   return (
-    <body>
-      <header>
+    <div className="App">
+      <header onClick={resetFields}>
         <h1>AcmePlex Theater Ticket Reservation</h1>
       </header>
-      <main>
-        {/* <!-- User Type Selection --> */}
-        <section id="user-selection">
-          <h2>Select User Type</h2>
-          <button id="ordinary-user">Ordinary User</button>
-          <button id="registered-user">Registered User (RU)</button>
-
-          {/* <!-- For server testing--> */}
-          <h1>Click the button Test runing Java program(print value of TestProgram in backend)</h1>
-          <button id="runJavaTestButton">Run Java(Test)</button>
-          <input type="text" id="Test-input" placeholder="Enter your input for testing server post method" />
-          <button id="TestInputButton">submit</button>
-          <pre id="output"></pre>
-        </section>
-
-        {/* <!-- Sign Up / Sign In Section --> */}
-        <section id="auth-section" class="hidden">
-          <h2>Sign Up / Sign In</h2>
-          <button id="signup-button">Sign Up</button>
-          <button id="signin-button">Sign In</button>
-        </section>
-
-        {/* <!-- Sign Up Form --> */}
-        <section id="signup-section" class="hidden">
-          <h2>Sign Up</h2>
-          <form id="signup-form">
-            <label for="signup-name">Name:</label>
-            <input type="text" id="signup-name" placeholder="Enter your name" required />
-            <label for="signup-email">Email:</label>
-            <input type="email" id="signup-email" placeholder="Enter your email" required />
-            <label for="signup-password">Password:</label>
-            <input type="password" id="signup-password" placeholder="Enter your password" required />
-            <label for="signup-address">Address:</label>
-            <input type="text" id="signup-address" placeholder="Enter your address" required />
-            <label for="signup-card">Card Number:</label>
-            <input type="text" id="signup-card" placeholder="Enter your card number" required />
-            <button type="submit">Sign Up</button>
-          </form>
-          <p id="signup-success" class="hidden">Sign Up Successful! You can now sign in.</p>
-        </section>
-
-        {/* <!-- Sign In Form --> */}
-        {/* <SignInForm /> */}
-
-        {/* <!-- Theater Selection Section --> */}
-        <section id="theater-selection-section" class="hidden">
-          <h2>Select a Theater</h2>
-          <div id="theater-list"></div>
-        </section>
-
-        {/* <!-- Search Bar Section --> */}
-        <section id="search-bar-section" class="hidden">
-          <h2>Search for Movies</h2>
-          <input type="text" id="movie-search" placeholder="Search for a movie..." />
-        </section>
-
-        {/* <!-- Movies Section --> */}
-        <section id="movies-section" class="hidden">
-          <h2>Available Movies</h2>
-          <div id="movie-list"></div>
-        </section>
-
-        {/* <!-- Seat Selection Section --> */}
-        <section id="seat-selection-section" class="hidden">
-          <h2>Select Your Seats</h2>
-          <div id="seat-map"></div>
-          <p id="total-price">Total Price: $0</p>
-          <button id="confirm-selection-button">Confirm Selection</button>
-        </section>
-
-        {/* <!-- Payment Section --> */}
-        <section id="payment-section" class="hidden">
-          <h2>Payment</h2>
-          <p id="final-price"></p>
-          <form id="payment-form">
-            <label for="card-number">Card Number:</label>
-            <input type="text" id="card-number" required />
-            <label for="expiry-date">Expiry Date:</label>
-            <input type="text" id="expiry-date" required />
-            <label for="cvv">CVV:</label>
-            <input type="text" id="cvv" required />
-            <button type="submit">Pay</button>
-          </form>
-        </section>
-
-        {/* <!-- Receipt Section --> */}
-        <section id="receipt-section" class="hidden">
-          <h2>Ticket Receipt</h2>
-          <div id="receipt-details"></div>
-          <button id="cancel-ticket-button">Cancel Ticket</button>
-        </section>
-      </main>
-    </body>
+      <div className='appContent'>
+        {isRegisteredUser === null && <UserSelection onUserSelect={handleUserSelection} />}
+        {isRegisteredUser && !isSignedIn && <SignSelection onUserSelect={handleSignSelection} />}
+        {isRegisteredUser && isSignUp === false && !currentTheater && !isSignedIn && <SignInForm onUserSelect={handleSignIn} setPaymentInfo={setPaymentInfo} />}
+        {isRegisteredUser && isSignUp === true && !currentTheater && !isSignedIn && <SignUpForm />}
+        {(isRegisteredUser == false || isSignedIn) && !currentTheater && <TheaterSelect
+          onTheaterSelect={handleTheaterSelection} theaters={theaters} />}
+        {currentTheater && selectedSeats.length === 0 && (
+          <MovieSelection
+            movies={movies}
+            currentTheater={currentTheater}
+            onMovieSelect={handleMovieSelection}
+            onBack={handleTheaterSelection}  // Passing the handleBack function to MovieSelection
+          />
+        )}
+        {currentMovie && selectedSeats.length === 0 && <SeatForm onSeatSelect={handleSeatSelection} SEAT_COST={TICKET_COST} />}
+        {selectedSeats.length > 0 && !purchasedTicket && <PaymentForm
+          onPurchase={handleTicketPurchase}
+          setPaymentInfo={setPaymentInfo}
+          paymentInfo={paymentInfo}
+          selectedSeats={selectedSeats}
+          seatCost={TICKET_COST}
+          currentMovie={currentMovie}
+          currentTheater={currentTheater}
+        />}
+        {purchasedTicket && <ReceiptDisplay ticket={purchasedTicket} />}
+      </div>
+    </div>
   );
-}
+};
 
 export default App;

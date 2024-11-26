@@ -10,7 +10,7 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const normalizedDirname = __dirname.startsWith('/') ? __dirname.slice(1) : __dirname;
 
 const app = express();
-const port = 3000;
+const port = 3100;
 
 // Middleware to serve static files from the "public" directory
 app.use(express.static(path.join(normalizedDirname, 'public')));  // Serve static files from the public folder
