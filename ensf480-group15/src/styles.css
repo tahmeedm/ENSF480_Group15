@@ -11,6 +11,13 @@ header {
     color: white;
     padding: 10px 20px;
     text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+header:hover {
+    background-color: #555;
+
 }
 
 section {
@@ -59,6 +66,7 @@ button:hover {
     max-width: 50%;
     align-self: center;
     justify-self: center;
+    transition: all 0.3s ease;
 }
 
 .theater-item {

@@ -42,7 +42,9 @@ function MovieSelection({ movies, currentTheater, onMovieSelect, onBack }) {
                             className="movie-card"
                             onClick={() => handleMovieClick(movie)}
                         >
-                            <h3>{movie.name}</h3>
+                            <h3>{movie.title}</h3>
+                            <p>{movie.description}</p>
+                            <p>Release Date: {movie.releaseDate}</p>
                             <p>Showtimes: {movie.showtimes.join(', ')}</p>
                         </div>
                     ))

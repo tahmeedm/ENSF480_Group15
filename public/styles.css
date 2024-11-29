@@ -11,6 +11,7 @@ header {
     color: white;
     padding: 10px 20px;
     text-align: center;
+    cursor: pointer;
 }
 
 section {
@@ -86,7 +87,8 @@ button:hover {
 }
 
 /* Price display styling */
-#total-price, #final-price {
+#total-price,
+#final-price {
     font-size: 1.2em;
     font-weight: bold;
     margin-top: 10px;

@@ -45,6 +45,9 @@ function PaymentForm({
         };
 
         onPurchase(purchaseDetails);
+
+
+
         console.log('Purchase Details:', purchaseDetails);
     };
 
