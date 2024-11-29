@@ -83,6 +83,18 @@ public class HelloController {
             return ResponseEntity.ok(user);
         }
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity<User> signUp(@RequestBody RegisteredUser user) {
+        System.out.println("User info: " + user);
+        System.out.println("User info: " + user.getName());
+        System.out.println("User info: " + user.getEmail());
+        System.out.println("User info: " + user.getAddress());
+        System.out.println("User info: " + user.getPaymentInfo());
+        System.out.println("User info: " + user.getPassword());
+        System.out.println("User info: " + user.getUsername());
+        return ResponseEntity.ok(user);
+    }
     
     public static class SignInRequest {
         private String username;

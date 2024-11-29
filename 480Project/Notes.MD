@@ -1,5 +1,5 @@
 <!-- start gradle -->
-./gradlew bootRun  
+./gradlew bootRun  --console=plain
 <!-- Testing code -->
 curl http://localhost:8083/hello
 <!-- Test the frontend test -->
