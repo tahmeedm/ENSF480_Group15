@@ -1,5 +1,7 @@
 package Group15._Project;
 
+import java.util.ArrayList;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +48,24 @@ public class HelloController {
         } else {
             return "No input received.";  // Default message if no args were provided
         }
+    }
+
+    @GetMapping("/fetchSeats")
+    public ArrayList<Seat> getSeats(@RequestParam(required = false) int args) {
+        System.out.println("Theatre ID: " + args);
+        
+        // Filter for current screening
+
+        // Get Seats From API
+        
+
+        // Placeholder for seats
+        ArrayList<Seat> seats = new ArrayList<>();
+        for (int i = 1; i <= 100; i++) {
+            seats.add(new Seat(null, 15, i));
+        }
+        System.out.println("Seats: " + seats);
+        return seats;
     }
     
     @RestController
@@ -94,6 +114,12 @@ public class HelloController {
         System.out.println("User info: " + user.getPassword());
         System.out.println("User info: " + user.getUsername());
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/bookTicket")
+    public ResponseEntity<TicketBooking> bookTicket(@RequestBody TicketBooking ticketBooking) {
+        System.out.println("Ticket info: " + ticketBooking);
+        return ResponseEntity.ok(ticketBooking);
     }
     
     public static class SignInRequest {

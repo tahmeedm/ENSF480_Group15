@@ -17,8 +17,8 @@ const App = () => {
   const [currentMovie, setCurrentMovie] = useState(null);
   const [currentTheater, setCurrentTheater] = useState(null);
   const [purchasedTicket, setPurchasedTicket] = useState(null);
-  const totalSeats = 100;
-  const TICKET_COST = 15;
+  const [seats, setSeats] = useState([]);  // Seats state, initialized as empty array
+
 
   const [theaters, setTheaters] = useState([
     { id: 1, name: "AcmePlex Downtown" },
@@ -106,7 +106,12 @@ const App = () => {
   };
 
   const handleTheaterSelection = (theater) => {
-    console.log(`Selected Theater: ${theater.name}`);
+    try {
+      console.log(`Selected Theater: ${theater.name}`);
+    } catch (error) {
+      console.error('Error selecting theater:', error);
+    }
+    setCurrentMovie(null);
     setCurrentTheater(theater);
   };
 
@@ -145,11 +150,11 @@ const App = () => {
         <h1>AcmePlex Theater Ticket Reservation</h1>
       </header>
       <div className='appContent'>
-        {isRegisteredUser === null && <UserSelection onUserSelect={handleUserSelection} />}
+        {isRegisteredUser === null && userInfo === null && <UserSelection onUserSelect={handleUserSelection} />}
         {isRegisteredUser && !isSignedIn && <SignSelection onUserSelect={handleSignSelection} />}
         {isRegisteredUser && isSignUp === false && !currentTheater && !isSignedIn && <SignInForm onUserSelect={handleSignIn} />}
-        {isRegisteredUser && isSignUp === true && !currentTheater && !isSignedIn && <SignUpForm />}
-        {(isRegisteredUser === false || isSignedIn) && !currentTheater && <TheaterSelect
+        {isRegisteredUser && isSignUp === true && !currentTheater && !isSignedIn && <SignUpForm onUserSelect={handleSignIn} />}
+        {(isRegisteredUser === false || isSignedIn || userInfo) && !currentTheater && <TheaterSelect
           onTheaterSelect={handleTheaterSelection} theaters={theaters} />}
         {currentTheater && selectedSeats.length === 0 && (
           <MovieSelection
@@ -159,15 +164,15 @@ const App = () => {
             onBack={handleTheaterSelection}  // Passing the handleBack function to MovieSelection
           />
         )}
-        {currentMovie && selectedSeats.length === 0 && <SeatForm onSeatSelect={handleSeatSelection} SEAT_COST={TICKET_COST} />}
+        {currentMovie && selectedSeats.length === 0 && <SeatForm onSeatSelect={handleSeatSelection} theaterId={currentTheater.id} globalSeats={setSeats} seatingArrangement={seats} user={userInfo} />}
         {selectedSeats.length > 0 && !purchasedTicket && <PaymentForm
           onPurchase={handleTicketPurchase}
           setPaymentInfo={setPaymentInfo}
           paymentInfo={paymentInfo}
           selectedSeats={selectedSeats}
-          seatCost={TICKET_COST}
           currentMovie={currentMovie}
           currentTheater={currentTheater}
+          seatingArrangement={seats}
         />}
         {purchasedTicket && <ReceiptDisplay ticket={purchasedTicket} />}
       </div>

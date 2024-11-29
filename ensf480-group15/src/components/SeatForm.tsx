@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function SeatForm({ onSeatSelect, SEAT_COST }) {
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
+function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement }) {
+    // State hooks
+    const [selectedSeats, setSelectedSeats] = useState([]);  // Selected seats state
+    const [totalPrice, setTotalPrice] = useState(0);  // Total price state
 
-    // Generate 100 seats
-    const generateSeats = () => {
-        const seats = [];
-        for (let i = 0; i < 100; i++) {
-            seats.push({
-                id: i + 1, // Seat ID (1-based index)
-                selected: false, // Initially not selected
+    // Function to load seats from API
+    const loadSeats = () => {
+        console.log('Fetching seats for theaterId:', theaterId);
+        axios.get('http://localhost:8083/fetchSeats', {
+            params: { args: theaterId }
+        })
+            .then((response) => {
+                if (response && response.data) {
+                    console.log('Response data:', response.data);
+                    setSeats(response.data);  // Set the fetched seats
+                } else {
+                    console.error('Error fetching seats: no response or invalid response');
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching seats:', error);
             });
-        }
-        return seats;
     };
-
-    const [seats, setSeats] = useState(generateSeats());
 
     // Update total price based on selected seats
     const updateTotalPrice = () => {
-        console.log(selectedSeats);
-        setTotalPrice(selectedSeats.length * SEAT_COST);
+        let totalCost = 0;
+        for (let i = 0; i < selectedSeats.length; i++) {
+            totalCost += selectedSeats[i].price;  // Assuming each seat has a 'price' property
+        }
+        setTotalPrice(totalCost);
     };
 
     // Handle seat click
@@ -35,35 +45,37 @@ function SeatForm({ onSeatSelect, SEAT_COST }) {
             // Otherwise, select the seat
             newSelectedSeats.push(seatId);
         }
-        setSelectedSeats(newSelectedSeats);
+        setSelectedSeats(newSelectedSeats);  // Update selected seats state
     };
 
     // Trigger onSeatSelect when selection is confirmed
     const handleConfirmSelection = () => {
-        onSeatSelect(selectedSeats);
+        onSeatSelect(selectedSeats);  // Pass the selected seats to the parent component
     };
 
+    // useEffect to fetch seats only once when the component mounts
     useEffect(() => {
-        // Reset selected seats and price if seats change
-        setSelectedSeats([]);
-        setTotalPrice(0);
-    }, []);
+        if (theaterId) {
+            loadSeats();  // Only fetch seats when theaterId is available
+        }
+    }, [theaterId]);  // Run once when component mounts or when theaterId changes
 
+    // useEffect to update total price whenever selectedSeats change
     useEffect(() => {
         updateTotalPrice();
-    }, [selectedSeats]);
+    }, [selectedSeats]);  // Update total price when selectedSeats changes
 
     return (
         <section id="seat-selection-section">
             <h2>Select Your Seats</h2>
             <div id="seat-map">
-                {seats.map((seat) => (
+                {seatingArrangement.map((seat) => (
                     <div
-                        key={seat.id}
-                        className={`seat ${selectedSeats.includes(seat.id) ? 'selected' : ''}`}
-                        onClick={() => handleSeatClick(seat.id)}
+                        key={seat.seatNumber}
+                        className={`seat ${selectedSeats.includes(seat.seatNumber) ? 'selected' : ''}`}
+                        onClick={() => handleSeatClick(seat.seatNumber)}
                     >
-                        {seat.id}
+                        {seat.seatNumber}
                     </div>
                 ))}
             </div>

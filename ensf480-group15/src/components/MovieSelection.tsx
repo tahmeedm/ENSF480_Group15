@@ -19,7 +19,7 @@ function MovieSelection({ movies, currentTheater, onMovieSelect, onBack }) {
     // Handle search query input and filter movies
     const handleSearch = (query) => {
         const filtered = movies.filter((movie) =>
-            movie.name.toLowerCase().includes(query.toLowerCase()) &&
+            movie.title.toLowerCase().includes(query.toLowerCase()) &&
             movie.theaterId === currentTheater.id // Only filter within the selected theater
         );
         setFilteredMovies(filtered);

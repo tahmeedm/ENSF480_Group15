@@ -2,17 +2,17 @@ package Group15._Project;
 
 import java.util.ArrayList;
 
-public abstract class Screening {
+public class Screening {
     private Theatre theatre;
-    private String room;
+    private Movie movie;
     private String screenDate;
     private String openDate;
     private ArrayList<Seat> seatList;
 
     // Constructor
-    public Screening(Theatre theatre, String room, String screenDate, String openDate) {
+    public Screening(Theatre theatre, Movie movie, String screenDate, String openDate) {
         this.theatre = theatre;
-        this.room = room;
+        this.movie = movie;
         this.screenDate = screenDate;
         this.openDate = openDate;
         this.seatList = new ArrayList<>();
@@ -23,8 +23,8 @@ public abstract class Screening {
         return theatre;
     }
 
-    public String getRoom() {
-        return room;
+    public Movie getMovie() {
+        return movie;
     }
 
     public String getScreenDate() {
@@ -47,5 +47,4 @@ public abstract class Screening {
         seatList.remove(seat);
     }
 
-    public abstract String getScreeningDetails();
 }

@@ -128,6 +128,10 @@ button:hover {
     text-align: center;
 }
 
+.seat:hover {
+    background-color: lightgreen;
+}
+
 .seat.selected {
     background-color: orange;
 }
@@ -165,4 +169,22 @@ button:hover {
     flex-direction: column;
     align-items: center;
     margin: 5px;
+}
+
+#search-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 15px;
+}
+
+#movie-search {
+    height: 30px;
+    width: 50%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
 }

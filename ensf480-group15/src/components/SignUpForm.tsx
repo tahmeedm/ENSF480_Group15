@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function SignUpForm() {
+function SignUpForm({ onUserSelect }) {
     // Define state variables for form inputs
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -41,7 +41,8 @@ function SignUpForm() {
         axios.post('http://localhost:8083/signup', userData)
             .then((response) => {
                 // User created successfully
-                setSuccessMessage('User created successfully! Please log in.');
+                setSuccessMessage('User created successfully! Logging you in!');
+                onUserSelect(true, response.data);
             })
             .catch((error) => {
                 // Error creating user

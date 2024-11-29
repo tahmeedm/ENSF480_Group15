@@ -12,8 +12,9 @@ function SearchBar({ onSearch }) {
     return (
         <div id="search-bar">
             <input
+                id="movie-search"
                 type="text"
-                placeholder="Search for a movie..."
+                placeholder="Search for a movie by title..."
                 value={query}
                 onChange={handleChange}
             />

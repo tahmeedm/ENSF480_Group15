@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 function PaymentForm({
@@ -7,7 +8,8 @@ function PaymentForm({
     selectedSeats,
     seatCost,
     currentMovie,
-    currentTheater
+    currentTheater,
+    seatingArrangement
 }) {
     const [formData, setFormData] = useState({
         cardNumber: paymentInfo?.cardNumber || '',
@@ -34,19 +36,42 @@ function PaymentForm({
         // Send payment info to parent
         setPaymentInfo(formData);
 
+        // const purchaseDetails = {
+        //     movieName: currentMovie.name,
+        //     theaterName: currentTheater.name,
+        //     showtime: currentMovie.showtimes[0], // Assuming we use the first showtime, modify as needed
+        //     seats: selectedSeats,
+        //     totalPrice: totalPrice,
+        //     paymentInfo: formData,
+        //     seatCost: seatCost,
+        // };
+
         const purchaseDetails = {
-            movieName: currentMovie.name,
-            theaterName: currentTheater.name,
-            showtime: currentMovie.showtimes[0], // Assuming we use the first showtime, modify as needed
-            seats: selectedSeats,
-            totalPrice: totalPrice,
-            paymentInfo: formData,
-            seatCost: seatCost,
+            screening: {
+                theatre: currentTheater,
+                movie: currentMovie,
+                screenDate: currentMovie.showtimes,
+                openDate: currentMovie.releaseDate,
+                seatList: seatingArrangement,
+            },
+            receipt: {
+                paymentInfo: formData,
+                transactionDate: new Date().toISOString(),
+                seatList: selectedSeats,
+                totalPrice: totalPrice
+            },
         };
 
         onPurchase(purchaseDetails);
 
-
+        // Send Form Data to API
+        axios.post('http://localhost:8083/purchase', purchaseDetails)
+            .then(response => {
+                console.log('Purchase successful:', response.data);
+            })
+            .catch(error => {
+                console.error('Error making purchase:', error);
+            });
 
         console.log('Purchase Details:', purchaseDetails);
     };

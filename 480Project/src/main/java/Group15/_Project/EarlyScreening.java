@@ -5,9 +5,9 @@ public class EarlyScreening extends Screening {
     private float percentRegistered;
     private String earlyDate;
 
-    public EarlyScreening(float percentRegistered, String earlyDate, Theatre theatre, String room, String screenDate,
+    public EarlyScreening(float percentRegistered, String earlyDate, Theatre theatre, Movie movie, String screenDate,
                         String openDate) {
-        super(theatre, room, screenDate, openDate);
+        super(theatre, movie, screenDate, openDate);
         this.percentRegistered = percentRegistered;
         this.earlyDate = earlyDate;
     }
@@ -28,8 +28,4 @@ public class EarlyScreening extends Screening {
         this.earlyDate = earlyDate;
     }
 
-    @Override
-    public String getScreeningDetails() {
-        return "Early Screening on " + getScreenDate() + " with " + percentRegistered + "% of seats registered in advance.";
-    }
 }
