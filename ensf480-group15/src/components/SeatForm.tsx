@@ -15,7 +15,7 @@ function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement }) 
             .then((response) => {
                 if (response && response.data) {
                     console.log('Response data:', response.data);
-                    setSeats(response.data);  // Set the fetched seats
+                    globalSeats(response.data);  // Set the fetched seats
                 } else {
                     console.error('Error fetching seats: no response or invalid response');
                 }
@@ -34,17 +34,20 @@ function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement }) 
         setTotalPrice(totalCost);
     };
 
-    // Handle seat click
-    const handleSeatClick = (seatId) => {
+    // Handle seat click (store full seat objects instead of just seat numbers)
+    const handleSeatClick = (seatNumber) => {
+        const seat = seatingArrangement.find((seat) => seat.seatNumber === seatNumber);  // Find the full seat object by seatNumber
         const newSelectedSeats = [...selectedSeats];
-        if (newSelectedSeats.includes(seatId)) {
-            // If seat is already selected, deselect it
-            const index = newSelectedSeats.indexOf(seatId);
-            newSelectedSeats.splice(index, 1);
+
+        if (newSelectedSeats.some((selectedSeat) => selectedSeat.seatNumber === seatNumber)) {
+            // If the seat is already selected, deselect it
+            const index = newSelectedSeats.findIndex((selectedSeat) => selectedSeat.seatNumber === seatNumber);
+            newSelectedSeats.splice(index, 1);  // Remove the seat object
         } else {
             // Otherwise, select the seat
-            newSelectedSeats.push(seatId);
+            newSelectedSeats.push(seat);  // Add the full seat object
         }
+
         setSelectedSeats(newSelectedSeats);  // Update selected seats state
     };
 
@@ -72,7 +75,7 @@ function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement }) 
                 {seatingArrangement.map((seat) => (
                     <div
                         key={seat.seatNumber}
-                        className={`seat ${selectedSeats.includes(seat.seatNumber) ? 'selected' : ''}`}
+                        className={`seat ${selectedSeats.some(selectedSeat => selectedSeat.seatNumber === seat.seatNumber) ? 'selected' : ''}`}
                         onClick={() => handleSeatClick(seat.seatNumber)}
                     >
                         {seat.seatNumber}
