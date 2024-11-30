@@ -1,8 +1,15 @@
 package Group15._Project;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "RegisteredUser")
 public class RegisteredUser extends User {
 
+	@Column(name = "password", nullable = false)
 	private String password;
+
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
 	public RegisteredUser(String name, String email, String address, PaymentInfo paymentInfo, String password,

@@ -1,7 +1,15 @@
 package Group15._Project;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "OrdinaryUser")
 public class OrdinaryUser extends User {
 
+	@Column(name = "admin_fee_expiration_date")
 	private String adminFeeExipirationDate;
+
+	@Column(name = "has_admin_fee", nullable = false)
 	private boolean  hasAdminFee;
 
 	public OrdinaryUser(String name, String email, String address, PaymentInfo paymentInfo,

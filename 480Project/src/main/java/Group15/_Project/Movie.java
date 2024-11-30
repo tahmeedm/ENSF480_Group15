@@ -1,11 +1,26 @@
 package Group15._Project;
 import java.util.ArrayList;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "movie")
 public class Movie {
-	private String name;
-	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(name = "movie_name", nullable = false)
+	private String name;
+
+	@Column(name = "movie_description")
+	private String description;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private ArrayList<Screening> screenings = new ArrayList<Screening>();
+
+	@Column(name = "release_date", nullable = false)
 	private String releaseDate;
 
 	public Movie(String name, String description, int id, String releaseDate) {

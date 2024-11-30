@@ -1,36 +1,62 @@
 package Group15._Project;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Seats")
 public class Seat {
-	private User occupant;
-	private float price;
-	private int seatNumber;
 
-	public Seat(User occupant, float price, int seatNumber) {
-		this.occupant = occupant;
-		this.price = price;
-		this.seatNumber = seatNumber;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	public User getOccupant() {
-		return occupant;
-	}
+    @ManyToOne
+    @JoinColumn(name = "registered_user_id")
+    private RegisteredUser occupant;
 
-	public void setOccupant(User occupant) {
-		this.occupant = occupant;
-	}
+    @Column(name = "price", nullable = false)
+    private float price;
 
-	public float getPrice() {
-		return price;
-	}
+    @Column(name = "seat_number", nullable = false)
+    private int seatNumber;
 
-	public void setPrice(float price) {
-		this.price = price;
-	}
+    // Constructor
+    public Seat(RegisteredUser occupant, float price, int seatNumber) {
+        this.occupant = occupant;
+        this.price = price;
+        this.seatNumber = seatNumber;
+    }
 
-	public int getSeatNumber() {
-		return seatNumber;
-	}
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
 
-	public void setSeatNumber(int seatNumber) {
-		this.seatNumber = seatNumber;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public RegisteredUser getOccupant() {
+        return occupant;
+    }
+
+    public void setOccupant(RegisteredUser occupant) {
+        this.occupant = occupant;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
+    }
 }

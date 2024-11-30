@@ -1,8 +1,15 @@
 package Group15._Project;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "early_screenings")
 public class EarlyScreening extends Screening {
 
+    @Column(name = "percent_registered", nullable = false)
     private float percentRegistered;
+
+    @Column(name = "early_date", nullable = false)
     private String earlyDate;
 
     public EarlyScreening(float percentRegistered, String earlyDate, Theatre theatre, Movie movie, String screenDate,
