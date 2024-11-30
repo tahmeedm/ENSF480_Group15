@@ -1,48 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar.tsx';
 
-function MovieSelection({ movies, currentTheater, onMovieSelect, onBack }) {
-    // Initial filter of movies based on the selected theater's id
-    const [filteredMovies, setFilteredMovies] = useState(
-        movies.filter(movie => movie.theaterId === currentTheater.id)
-    );
+// Function to group screenings by movie and theater
+const groupScreeningsByMovieAndTheater = (screenings, currentTheater) => {
+    const grouped = {};
 
-    // Handle movie selection
+    screenings.forEach(screening => {
+        console.log('Processing screening:', screening); // Log each screening
+        if (screening.theatre.id === currentTheater.id) {
+            const { movie, screenDate } = screening;
+            const key = `${movie.id}-${screening.theatre.id}`;
+
+            if (!grouped[key]) {
+                grouped[key] = {
+                    movie,
+                    showtimes: [],
+                };
+            }
+
+            grouped[key].showtimes.push(screenDate);
+        }
+    });
+
+    return Object.values(grouped).map(({ movie, showtimes }) => ({
+        ...movie,
+        showtimes: [...new Set(showtimes)].sort((a, b) => new Date(a) - new Date(b))
+    }));
+};
+
+function MovieSelection({ Screenings, currentTheater, onMovieSelect, onBack }) {
+    const [filteredMovies, setFilteredMovies] = useState([]);
+
+    useEffect(() => {
+        console.log('Screenings:', Screenings);
+        console.log('Current Theater:', currentTheater);
+
+        if (Screenings.length > 0) {
+            const groupedMovies = groupScreeningsByMovieAndTheater(Screenings, currentTheater);
+            console.log('Grouped Movies:', groupedMovies); // Log the grouped movies
+            setFilteredMovies(groupedMovies);
+        } else {
+            console.log('No screenings available');
+        }
+    }, [Screenings, currentTheater]);
+
     const handleMovieClick = (movie) => {
-        onMovieSelect(movie); // Notify parent about the selected movie
+        onMovieSelect(movie);
     };
 
     const handleBackClick = () => {
-        onBack(null); // Reset the current theater
+        onBack(null);
     };
 
-    // Handle search query input and filter movies
     const handleSearch = (query) => {
-        const filtered = movies.filter((movie) =>
-            movie.title.toLowerCase().includes(query.toLowerCase()) &&
-            movie.theaterId === currentTheater.id // Only filter within the selected theater
+        const filtered = filteredMovies.filter((movie) =>
+            movie.name.toLowerCase().includes(query.toLowerCase())
         );
         setFilteredMovies(filtered);
     };
 
     return (
-        <section id="movies-section">
-            <button onClick={handleBackClick}>Back</button> {/* Back button to reset the current theater */}
-            <h2>Available Movies at {currentTheater.name}</h2>
+        <section id="Screenings-section">
+            <button onClick={handleBackClick}>Back</button>
+            <h2>Available Movies at {currentTheater.theatreName}</h2>
             <SearchBar onSearch={handleSearch} />
             <div id="movie-list">
-                {/* If there are no movies for the selected theater */}
                 {filteredMovies.length === 0 ? (
                     <p>No movies available for this theater at the moment.</p>
                 ) : (
-                    // Render each filtered movie
                     filteredMovies.map((movie) => (
                         <div
                             key={movie.id}
                             className="movie-card"
                             onClick={() => handleMovieClick(movie)}
                         >
-                            <h3>{movie.title}</h3>
+                            <h3>{movie.name}</h3>
                             <p>{movie.description}</p>
                             <p>Release Date: {movie.releaseDate}</p>
                             <p>Showtimes: {movie.showtimes.join(', ')}</p>

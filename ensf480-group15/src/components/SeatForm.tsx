@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement, priceHandler }) {
+function SeatForm({
+    onSeatSelect,
+    setGlobalSeats,
+    seatingArrangement,
+    priceHandler,
+    selectedScreening
+}) {
     // State hooks
     const [selectedSeats, setSelectedSeats] = useState([]);  // Selected seats state
     const [totalPrice, setTotalPrice] = useState(0);  // Total price state
 
     // Function to load seats from API
     const loadSeats = () => {
-        console.log('Fetching seats for theaterId:', theaterId);
-        axios.get('http://localhost:8083/fetchSeats', {
-            params: { args: theaterId }
-        })
+        console.log('Fetching seats for selectedScreening:', selectedScreening);
+        axios.post('http://localhost:8083/fetchSeats', selectedScreening)
             .then((response) => {
                 if (response && response.data) {
                     console.log('Response data:', response.data);
-                    globalSeats(response.data);  // Set the fetched seats
+                    setGlobalSeats(response.data);  // Set the fetched seats
                 } else {
                     console.error('Error fetching seats: no response or invalid response');
                 }
@@ -24,6 +28,7 @@ function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement, pr
                 console.error('Error fetching seats:', error);
             });
     };
+
 
     // Update total price based on selected seats
     const updateTotalPrice = () => {
@@ -59,10 +64,10 @@ function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement, pr
 
     // useEffect to fetch seats only once when the component mounts
     useEffect(() => {
-        if (theaterId) {
-            loadSeats();  // Only fetch seats when theaterId is available
+        if (selectedScreening) {
+            loadSeats();  // Only fetch seats when selectedScreening is available
         }
-    }, [theaterId]);  // Run once when component mounts or when theaterId changes
+    }, [selectedScreening]);  // Run once when component mounts or when selectedScreening changes
 
     // useEffect to update total price whenever selectedSeats change
     useEffect(() => {

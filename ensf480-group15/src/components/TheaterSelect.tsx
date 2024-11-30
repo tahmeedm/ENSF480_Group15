@@ -18,7 +18,8 @@ function TheaterSelect({ theaters, onTheaterSelect }) {
                         className="theater-item"
                         onClick={() => handleTheaterClick(theater)}
                     >
-                        <h3>{theater.name}</h3>
+                        <h3>{theater.theatreName}</h3>
+                        <p>{theater.description}</p>
                     </div>
                 ))}
             </div>

@@ -9,7 +9,8 @@ function PaymentForm({
     currentMovie,
     currentTheater,
     seatingArrangement,
-    price
+    price,
+    screenDate,
 }) {
     const [formData, setFormData] = useState({
         cardNumber: paymentInfo?.cardNumber || '',
@@ -47,7 +48,7 @@ function PaymentForm({
             screening: {
                 theatre: currentTheater,
                 movie: currentMovie,
-                screenDate: currentMovie.showtimes,
+                screenDate: screenDate,
                 openDate: currentMovie.releaseDate,
                 seatList: seatingArrangement,
             },

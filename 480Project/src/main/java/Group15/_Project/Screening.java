@@ -10,12 +10,12 @@ public class Screening {
     private ArrayList<Seat> seatList;
 
     // Constructor
-    public Screening(Theatre theatre, Movie movie, String screenDate, String openDate) {
+    public Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList) {
         this.theatre = theatre;
         this.movie = movie;
         this.screenDate = screenDate;
         this.openDate = openDate;
-        this.seatList = new ArrayList<>();
+        this.seatList = seatList;
     }
 
     // Getters and Setters

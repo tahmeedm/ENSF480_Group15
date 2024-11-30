@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SignSelection from './components/SignSelection.tsx';
 import SignInForm from './components/SignInForm.tsx';
 import SignUpForm from './components/SignUpForm.tsx';
@@ -8,6 +8,51 @@ import MovieSelection from './components/MovieSelection.tsx';
 import SeatForm from './components/SeatForm.tsx';
 import PaymentForm from './components/PaymentForm.tsx';
 import ReceiptDisplay from './components/ReceiptDisplay.tsx';
+import ShowtimeSelection from './components/ShowtimeSelection.tsx';
+
+// FetchScreenings as a component that fetches and provides data
+const FetchScreenings = ({ onDataFetched }) => {
+  useEffect(() => {
+    const apiEndpoint = 'http://localhost:8083/fetchScreenings';
+
+    const fetchScreenings = async () => {
+      try {
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+        console.log('Fetched Screenings:', data);
+        onDataFetched(data); // Pass data back to parent component
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    };
+
+    fetchScreenings();
+  }, [onDataFetched]); // Ensures this runs only once when the component is mounted
+
+  return null; // No UI for this component, it just fetches data
+};
+
+//fetchTheatres
+const FetchTheatres = ({ onDataFetched }) => {
+  useEffect(() => {
+    const apiEndpoint = 'http://localhost:8083/fetchTheatres';
+
+    const fetchTheatres = async () => {
+      try {
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+        console.log('Fetched Theatres:', data);
+        onDataFetched(data); // Pass data back to parent component
+      } catch (error) {
+        console.error('Error fetching theatres:', error);
+      }
+    };
+
+    fetchTheatres();
+  }, [onDataFetched]); // Ensures this runs only once when the component is mounted
+
+  return null; // No UI for this component, it just fetches data
+}
 
 const App = () => {
   const [isRegisteredUser, setIsRegisteredUser] = useState(null);
@@ -19,59 +64,24 @@ const App = () => {
   const [purchasedTicket, setPurchasedTicket] = useState(null);
   const [seats, setSeats] = useState([]);  // Seats state, initialized as empty array
   const [totalPrice, setTotalPrice] = useState(0);
+  const [showTime, setShowTime] = useState(null);
 
-  const [theaters, setTheaters] = useState([
-    { id: 1, name: "AcmePlex Downtown" },
-    { id: 2, name: "AcmePlex Mall" },
-    { id: 3, name: "AcmePlex Suburbs" },
-  ]);
-
-  const [movies, setMovies] = useState([
-    {
-      id: 1,
-      title: 'Inception',
-      description: 'A skilled thief is given a chance to have his criminal record erased if he can successfully perform an inception on a target\'s subconscious.',
-      releaseDate: '2010-07-16',
-      theaterId: 1,
-      showtimes: ['12:00 PM', '3:00 PM', '6:00 PM']
-    },
-    {
-      id: 2,
-      title: 'The Matrix',
-      description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.',
-      releaseDate: '1999-03-31',
-      theaterId: 2,
-      showtimes: ['1:00 PM', '4:00 PM', '7:00 PM']
-    },
-    {
-      id: 3,
-      title: 'Interstellar',
-      description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
-      releaseDate: '2014-11-07',
-      theaterId: 3,
-      showtimes: ['2:00 PM', '5:00 PM', '8:00 PM']
-    },
-    {
-      id: 4,
-      title: 'Avengers: Endgame',
-      description: 'The Avengers assemble once more in order to undo the damage caused by Thanos in the previous film and to restore peace to the universe.',
-      releaseDate: '2019-04-26',
-      theaterId: 1,
-      showtimes: ['11:00 AM', '2:30 PM', '6:30 PM']
-    },
-    {
-      id: 5,
-      title: 'The Dark Knight',
-      description: 'Batman faces off against the Joker, a criminal mastermind who wants to plunge Gotham City into anarchy.',
-      releaseDate: '2008-07-18',
-      theaterId: 2,
-      showtimes: ['12:30 PM', '3:30 PM', '7:30 PM']
-    }
-  ]);
-
+  const [theaters, setTheaters] = useState([]);
+  const [selectedScreening, setSelectedScreening] = useState(null);
+  const [screenings, setScreenings] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-
   const [paymentInfo, setPaymentInfo] = useState(null);
+
+  // Memoize the handleScreenFetched function to prevent unnecessary re-renders
+  const handleScreenFetched = useCallback((data) => {
+    console.log('Data fetched:', data);
+    setScreenings(data); // Update screenings state with fetched data
+  }, []);
+
+  const handleTheaterFetched = useCallback((data) => {
+    console.log('Data fetched:', data);
+    setTheaters(data); // Update theaters state with fetched data
+  }, []);
 
   const handleUserSelection = (isRegistered) => {
     setIsRegisteredUser(isRegistered);
@@ -89,54 +99,54 @@ const App = () => {
     setSignedIn(isSignedIn);
 
     console.log('Signed In', userInfo);
-    setUserInfo({
-      name: userInfo.name,
-      email: userInfo.email,
-      phoneNumber: userInfo.phoneNumber,
-      paymentInfo: userInfo.paymentInfo,
-      address: userInfo.address,
-      username: userInfo.username,
-      password: userInfo.password,
-      adminFee: userInfo.adminFee,
-      adminExpiryDate: userInfo.adminExpiryDate,
-    });
-
-    console.log('Payment Info', userInfo.paymentInfo);
-    setPaymentInfo({
-      cardNumber: userInfo.paymentInfo.cardNumber,
-      expiryDate: userInfo.paymentInfo.expiryDate,
-      cvv: userInfo.paymentInfo.cvv
-    })
+    setUserInfo(userInfo); // Store the user info in state
+    setPaymentInfo(userInfo.paymentInfo); // Store payment info separately
   };
 
   const handleTheaterSelection = (theater) => {
-    try {
-      console.log(`Selected Theater: ${theater.name}`);
-    } catch (error) {
-      console.error('Error selecting theater:', error);
-    }
     setCurrentMovie(null);
     setCurrentTheater(theater);
   };
 
   const handleMovieSelection = (movie) => {
-    console.log(`Selected Movie: ${movie.title}`);
+    console.log('Selected movie:', movie);
     setCurrentMovie(movie);
   };
 
   const handleSeatSelection = (seats) => {
-    console.log(`Selected Seats: ${seats}`);
     setSelectedSeats(seats);
   };
 
   const handleTicketPurchase = (ticketDetails) => {
-    console.log(`Ticket Purchased: ${JSON.stringify(ticketDetails)}`);
     setPurchasedTicket(ticketDetails);
   };
 
-  // Function to reset all fields
+  const handleShowtimeSelection = (showtime) => {
+    setShowTime(showtime);
+  };
+
+  // Find selected screening based on currentMovie, currentTheater, and showTime
+  const findSelectedScreening = () => {
+    return screenings.find((screening) => {
+      return (
+        screening.movie.name === currentMovie?.name &&
+        screening.theatre.theatreName === currentTheater?.theatreName &&
+        screening.screenDate === showTime
+      );
+    });
+  }
+
+  // useEffect to call findSelectedScreening when currentMovie, currentTheater, and showTime are set
+  useEffect(() => {
+    if (currentMovie && currentTheater && showTime) {
+      const selected = findSelectedScreening();
+      setSelectedScreening(selected); // Update the selected screening state
+      console.log('Selected Screening:', selected);
+    }
+  }, [currentMovie, currentTheater, showTime, screenings]); // Re-run whenever any of these values change
+
+  // Reset all fields
   const resetFields = () => {
-    console.log('Resetting fields');
     setIsRegisteredUser(null);
     setSignUpIn(false);
     setSignedIn(false);
@@ -147,12 +157,14 @@ const App = () => {
     setPaymentInfo(null);
   };
 
-
   return (
     <div className="App">
+      <FetchScreenings onDataFetched={handleScreenFetched} />
+      <FetchTheatres onDataFetched={handleTheaterFetched} />
       <header onClick={resetFields}>
         <h1>AcmePlex Theater Ticket Reservation</h1>
       </header>
+
       <div className='appContent'>
         {isRegisteredUser === null && userInfo === null && <UserSelection onUserSelect={handleUserSelection} />}
         {isRegisteredUser && !isSignedIn && <SignSelection onUserSelect={handleSignSelection} />}
@@ -162,24 +174,44 @@ const App = () => {
           onTheaterSelect={handleTheaterSelection} theaters={theaters} />}
         {currentTheater && selectedSeats.length === 0 && (
           <MovieSelection
-            movies={movies}
+            Screenings={screenings}
             currentTheater={currentTheater}
             onMovieSelect={handleMovieSelection}
             onBack={handleTheaterSelection}  // Passing the handleBack function to MovieSelection
           />
         )}
-        {currentMovie && selectedSeats.length === 0 && <SeatForm onSeatSelect={handleSeatSelection} theaterId={currentTheater.id} globalSeats={setSeats} seatingArrangement={seats} user={userInfo} priceHandler={handlePriceChange} />}
-        {selectedSeats.length > 0 && !purchasedTicket && <PaymentForm
-          onPurchase={handleTicketPurchase}
-          setPaymentInfo={setPaymentInfo}
-          paymentInfo={paymentInfo}
-          selectedSeats={selectedSeats}
-          currentMovie={currentMovie}
-          currentTheater={currentTheater}
-          seatingArrangement={seats}
-          price={totalPrice}
-        />}
-        {purchasedTicket && <ReceiptDisplay ticket={purchasedTicket} />}
+        {currentMovie && selectedSeats.length === 0 && (
+          <div>
+            <ShowtimeSelection
+              Showtimes={currentMovie.showtimes}
+              selectShowtime={handleShowtimeSelection}
+              selectedShowtime={showTime}
+            />
+            <SeatForm
+              onSeatSelect={handleSeatSelection}
+              setGlobalSeats={setSeats}
+              seatingArrangement={seats}
+              priceHandler={handlePriceChange}
+              selectedScreening={selectedScreening}
+            />
+          </div>
+        )}
+        {selectedSeats.length > 0 && !purchasedTicket &&
+          <PaymentForm
+            onPurchase={handleTicketPurchase}
+            setPaymentInfo={setPaymentInfo}
+            paymentInfo={paymentInfo}
+            selectedSeats={selectedSeats}
+            currentMovie={currentMovie}
+            currentTheater={currentTheater}
+            seatingArrangement={seats}
+            price={totalPrice}
+            screenDate={showTime}
+          />
+        }
+        {purchasedTicket &&
+          <ReceiptDisplay ticket={purchasedTicket} />
+        }
       </div>
     </div>
   );
