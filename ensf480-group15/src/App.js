@@ -9,6 +9,8 @@ import SeatForm from './components/SeatForm.tsx';
 import PaymentForm from './components/PaymentForm.tsx';
 import ReceiptDisplay from './components/ReceiptDisplay.tsx';
 import ShowtimeSelection from './components/ShowtimeSelection.tsx';
+import BookedTickets from './components/BookedTickets.tsx';
+import GuestCheckin from './components/GuestCheckin.tsx';
 
 // FetchScreenings as a component that fetches and provides data
 const FetchScreenings = ({ onDataFetched }) => {
@@ -145,17 +147,23 @@ const App = () => {
     }
   }, [currentMovie, currentTheater, showTime, screenings]); // Re-run whenever any of these values change
 
-  // Reset all fields
+  // Return to Main menu
   const resetFields = () => {
-    setIsRegisteredUser(null);
-    setSignUpIn(false);
-    setSignedIn(false);
     setSelectedSeats([]);
     setCurrentMovie(null);
     setCurrentTheater(null);
     setPurchasedTicket(null);
-    setPaymentInfo(null);
   };
+
+  const signOut = () => {
+    setSignedIn(false);
+    setUserInfo(null);
+    setIsRegisteredUser(null);
+  }
+
+  const handleGuestCheckin = () => {
+    setSignedIn(true);
+  }
 
   return (
     <div className="App">
@@ -166,12 +174,24 @@ const App = () => {
       </header>
 
       <div className='appContent'>
+        {isSignedIn === false && (isRegisteredUser === true || isRegisteredUser === false) && <button onClick={signOut}>Back</button>}
         {isRegisteredUser === null && userInfo === null && <UserSelection onUserSelect={handleUserSelection} />}
+        {isRegisteredUser === false && !isSignedIn && <GuestCheckin onGuestCheckin={handleGuestCheckin} />}
         {isRegisteredUser && !isSignedIn && <SignSelection onUserSelect={handleSignSelection} />}
         {isRegisteredUser && isSignUp === false && !currentTheater && !isSignedIn && <SignInForm onUserSelect={handleSignIn} />}
         {isRegisteredUser && isSignUp === true && !currentTheater && !isSignedIn && <SignUpForm onUserSelect={handleSignIn} />}
-        {(isRegisteredUser === false || isSignedIn || userInfo) && !currentTheater && <TheaterSelect
-          onTheaterSelect={handleTheaterSelection} theaters={theaters} />}
+        {(isSignedIn || userInfo) && !currentTheater &&
+          (
+            <div>
+              <button onClick={signOut}>Sign Out</button>
+              <h2>Welcome {userInfo.name}</h2>
+              <div className='MainMenu'>
+                <TheaterSelect onTheaterSelect={handleTheaterSelection} theaters={theaters} />
+                <BookedTickets User={userInfo} />
+              </div>
+            </div>
+          )
+        }
         {currentTheater && selectedSeats.length === 0 && (
           <MovieSelection
             Screenings={screenings}

@@ -8,7 +8,7 @@ function TheaterSelect({ theaters, onTheaterSelect }) {
     };
 
     return (
-        <section id="theater-selection-section">
+        <section id="menu-selection-section">
             <h2>Select a Theater</h2>
             <div id="theater-list">
                 {/* Render each theater */}

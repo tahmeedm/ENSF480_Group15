@@ -228,3 +228,16 @@ button:hover {
     justify-content: center;
     padding: 10px;
 }
+
+.MainMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#menu-selection-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 12px;
+}
