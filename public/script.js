@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmSelectionButton = document.getElementById('confirm-selection-button');
     const paymentForm = document.getElementById('payment-form');
 
-    //Server communication part:
+    
     const runJavaTestButton = document.getElementById('runJavaTestButton');
     const TestInput = document.getElementById('Test-input');
     const TestInputButton = document.getElementById('TestInputButton');
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentMovie = null;
     let currentTheater = null;
     let isRegisteredUser = false;
-    let purchasedTicket = null; // Stores ticket details after purchase
+    let purchasedTicket = null; 
     const totalSeats = 100;
     let RUSeatsBooked = 0; // Tracks RU seat bookings
     const TICKET_COST = 15; // Cost per seat
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Debug helper
     const log = (message) => console.log(`[DEBUG]: ${message}`);
 
-    // Ensure that hidden sections behave as expected
+    
     const hideAllSections = () => {
         authSection.classList.add('hidden');
         signupSection.classList.add('hidden');
@@ -110,17 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('http://localhost:3000/RegisteredUser',{
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'  // Tell the server that the request is JSON
+            'Content-Type': 'application/json'  
             },
             body: JSON.stringify({ modeType, email, address, paymentInfo, password, username })
-            // body: "Debug1."
+            
         })
             .then(response => {
                 // Processing Response
                 if (!response.ok) {
                     throw new Error('Network Response Failure');
                 }
-                return response.text();  // can use text(), json(), blob(), etc.
+                return response.text();  
             })
             .then(data => {
                 console.log(data);
@@ -150,8 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Payment Info: ", window.PaymentInfo);
             console.log("Password: ", window.Password);
             console.log("Username: ", window.Username);
-            // console.log(data);  // Processing of acquired web content
-            // Simulated credential check
+            
             if (loginStatus) {
                 signupSuccess.classList.remove('hidden');
                 signupForm.reset();
@@ -192,37 +191,37 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('http://localhost:3000/RegisteredUser',{
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'  // Tell the server that the request is JSON
+            'Content-Type': 'application/json'  
             },
             body: JSON.stringify({ modeType, email, address, paymentInfo, password, username })
-            // body: "Debug1."
+            
         })
             .then(response => {
                 // Processing Response
                 if (!response.ok) {
                     throw new Error('Network Response Failure');
                 }
-                return response.text();  // can use text(), json(), blob(), etc.
+                return response.text();  
             })
             .then(data => {
                 console.log(data);
                 const lines = data.split('\n');
             
-            // Loop through each line and extract relevant data
+            
             lines.forEach(line => {
                 if (line.startsWith('Success!')){
                     loginStatus = true
                 }
                 if (line.startsWith('email:')) {
-                    window.Email = line.split(':')[1].trim();  // Extract the email after 'email:'
+                    window.Email = line.split(':')[1].trim();  
                 } else if (line.startsWith('address:')) {
-                    window.Address = line.split(':')[1].trim();  // Extract the address after 'address:'
+                    window.Address = line.split(':')[1].trim();  
                 } else if (line.startsWith('paymentInfo:')) {
-                    window.PaymentInfo = line.split(':')[1].trim();  // Extract paymentInfo after 'paymentInfo:'
+                    window.PaymentInfo = line.split(':')[1].trim();  
                 } else if (line.startsWith('password:')) {
-                    window.Password = line.split(':')[1].trim();  // Extract password after 'password:'
+                    window.Password = line.split(':')[1].trim();  
                 } else if (line.startsWith('username:')) {
-                    window.Username = line.split(':')[1].trim();  // Extract username after 'username:'
+                    window.Username = line.split(':')[1].trim();  
                 }
             });
 
@@ -233,8 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Password: ", window.Password);
             console.log("Username: ", window.Username);
             document.getElementById('output').textContent = data;
-            // console.log(data);  // Processing of acquired web content
-            // Simulated credential check
+            
             if (loginStatus) {
                 signinSuccess.classList.remove('hidden');
                 signinForm.reset();
@@ -263,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 3, name: "AcmePlex Suburbs" },
     ];
 
-    // Movie data with theater association
+    // Movie data 
     const movies = [
         { id: 1, name: "Inception", theaterId: 1, showtimes: ["12:00 PM", "3:00 PM", "6:00 PM"] },
         { id: 2, name: "The Matrix", theaterId: 2, showtimes: ["1:00 PM", "4:00 PM", "7:00 PM"] },
@@ -272,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 5, name: "The Dark Knight", theaterId: 2, showtimes: ["12:30 PM", "3:30 PM", "7:30 PM"] },
     ];
 
-    // Load theaters into the theater selection section
+    // Load theaters 
     const loadTheaters = () => {
         log('Loading Theaters');
         theaterList.innerHTML = theaters.map(theater => `
@@ -293,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchBarSection.classList.remove('hidden'); // Show search bar
     };
 
-    // Movie Search Functionality
+    // Movie Search 
     movieSearchInput.addEventListener('input', () => {
         const query = movieSearchInput.value.toLowerCase();
         document.querySelectorAll('.movie-card').forEach(card => {
@@ -302,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Theater selection handler
+    // Theater selection 
     window.selectTheater = (id) => {
         log(`Theater Selected: ${id}`);
         currentTheater = theaters.find(theater => theater.id === id);
@@ -311,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadMoviesForTheater(id);
     };
 
-    // Movie selection handler
+    // Movie selection 
     window.selectMovie = (id) => {
         log(`Movie Selected: ${id}`);
         currentMovie = movies.find(movie => movie.id === id);
@@ -320,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         generateSeats();
     };
 
-    // Seat selection and payment
+    // Seat selection 
     const generateSeats = () => {
         log('Generating Seats');
         seatMap.innerHTML = '';
@@ -391,13 +389,13 @@ document.addEventListener('DOMContentLoaded', () => {
         receiptSection.classList.remove('hidden');
     });
 
-    // Cancellation Logic
+    // Cancellation 
     cancelTicketButton.addEventListener('click', () => {
         if (!purchasedTicket) return alert('No ticket to cancel!');
 
         const currentTime = new Date();
         const timeDiff = currentTime - new Date(purchasedTicket.purchaseTime);
-        const hoursDiff = timeDiff / (1000 * 60 * 60); // Convert ms to hours
+        const hoursDiff = timeDiff / (1000 * 60 * 60); 
 
         if (hoursDiff > 72) {
             alert('Cancellation not allowed beyond 72 hours of purchase.');
@@ -406,29 +404,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let refundAmount = purchasedTicket.totalCost;
         if (!isRegisteredUser) {
-            refundAmount -= (refundAmount * 0.15); // 15% admin fee for ordinary users
+            refundAmount -= (refundAmount * 0.15); // 15% admin fee 
         }
 
         alert(`Ticket canceled. Refund: $${refundAmount.toFixed(2)}`);
-        purchasedTicket = null; // Reset ticket details
+        purchasedTicket = null; 
         receiptSection.classList.add('hidden');
         theaterSelectionSection.classList.remove('hidden');
     });
 
-    //Server communication test part:
+    
     runJavaTestButton.addEventListener('click', () => {
-    // Send a request to the server.js
+    
         fetch('http://localhost:3000/TestProgram')
             .then(response => {
-                // Processing Response
+                
                 if (!response.ok) {
                     throw new Error('Network Response Failure');
                 }
-                return response.text();  // can use text(), json(), blob(), etc.
+                return response.text();  
             })
             .then(data => {
                 document.getElementById('output').textContent = data;
-                console.log(data);  // Processing of acquired web content
+                console.log(data);  
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -438,25 +436,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     TestInputButton.addEventListener('click', () => {
         requestInput = TestInput.value
-        // Send a request to the server.js
+        
         fetch('http://localhost:3000/TestProgram',{
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'  // Tell the server that the request is JSON
+            'Content-Type': 'application/json'  
             },
             body: JSON.stringify({ requestInput})
-            // body: "Debug1."
+            /
         })
             .then(response => {
-                // Processing Response
+                
                 if (!response.ok) {
                     throw new Error('Network Response Failure');
                 }
-                return response.text();  // can use text(), json(), blob(), etc.
+                return response.text();  
             })
             .then(data => {
                 document.getElementById('output').textContent = data;
-                console.log(data);  // Processing of acquired web content
+                console.log(data);  
             })
             .catch(error => {
                 console.error('Error:', error);
