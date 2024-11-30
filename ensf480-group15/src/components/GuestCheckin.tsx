@@ -45,6 +45,7 @@ function GuestCheckin({ onGuestCheckin }) {
     return (
         <section id="guest-checkin-section">
             <h2>Guest Check-in</h2>
+            <p>For one time users of AcmePlex</p>
             <form id="guest-checkin-form" onSubmit={handleSubmit}>
                 <div className='guest-checkin-item'>
                     <label htmlFor="guest-name">Name:</label>

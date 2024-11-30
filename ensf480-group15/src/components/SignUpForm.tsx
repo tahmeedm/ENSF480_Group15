@@ -53,6 +53,7 @@ function SignUpForm({ onUserSelect }) {
     return (
         <section id="signup-section">
             <h2>Sign Up</h2>
+            <p>For new users of AcmePlex</p>
             <form id="signup-form" onSubmit={handleSubmit}>
                 <div className='signup-item'>
                     <label htmlFor="signup-name">Name:</label>

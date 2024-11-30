@@ -69,25 +69,28 @@ function UserSelection({ onUserSelect }) {
 
     return (
         <section id="user-selection">
-            <h2>Select User Type</h2>
+            <h2>Welcome to AcmePlex Movie Theatre!</h2>
+            <p>Choose your user type to proceed with booking your tickets.</p>
             <button id="ordinary-user" onClick={handleOrdinaryUserSelection}>Ordinary User</button>
             <button id="registered-user" onClick={handleRegisteredUserSelection}>Registered User (RU)</button>
 
-            {/* For server testing */}
-            <h1>Click the button to test running Java program (print value of TestProgram in backend)</h1>
-            <button id="runJavaTestButton">Run Java(Test)</button>
-            {/* Input field to get user input */}
-            <input
-                type="text"
-                id="Test-input"
-                placeholder="Enter your input for testing server post method"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}  // Update the user input state on change
-            />
-            <button id="TestInputButton" onClick={handleTestButton}>Submit</button>
+            <div className="hidden">
+                {/* For server testing */}
+                <h1>Click the button to test running Java program (print value of TestProgram in backend)</h1>
+                <button id="runJavaTestButton">Run Java(Test)</button>
+                {/* Input field to get user input */}
+                <input
+                    type="text"
+                    id="Test-input"
+                    placeholder="Enter your input for testing server post method"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}  // Update the user input state on change
+                />
+                <button id="TestInputButton" onClick={handleTestButton}>Submit</button>
 
-            {/* Render output */}
-            <pre>{output}</pre>
+                {/* Render output */}
+                <pre>{output}</pre>
+            </div>
         </section>
     );
 }

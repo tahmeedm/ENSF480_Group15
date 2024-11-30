@@ -46,6 +46,7 @@ function SignInForm({ onUserSelect }) {
     return (
         <section id="signin-section">
             <h2>Sign In</h2>
+            <p>For returning users of AcmePlex</p>
             <form id="signin-form" onSubmit={handleSubmit}>
                 <label htmlFor="signin-username">Username:</label>
                 <input
