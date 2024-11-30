@@ -6,10 +6,10 @@ function PaymentForm({
     setPaymentInfo,
     paymentInfo,
     selectedSeats,
-    seatCost,
     currentMovie,
     currentTheater,
-    seatingArrangement
+    seatingArrangement,
+    price
 }) {
     const [formData, setFormData] = useState({
         cardNumber: paymentInfo?.cardNumber || '',
@@ -25,9 +25,6 @@ function PaymentForm({
             [name]: value
         });
     };
-
-    // Calculate total price based on selected seats and seat cost
-    const totalPrice = selectedSeats.length * seatCost;
 
     // Handle form submission
     const handleSubmit = (e) => {
@@ -58,7 +55,7 @@ function PaymentForm({
                 paymentInfo: formData,
                 transactionDate: new Date().toISOString(),
                 seatList: selectedSeats,
-                totalPrice: totalPrice
+                totalPrice: price
             },
         };
 
@@ -91,7 +88,7 @@ function PaymentForm({
             <h2>Payment</h2>
 
             {/* Display total price dynamically */}
-            <p id="final-price">Total Price: ${totalPrice}</p>
+            <p id="final-price">Total Price: ${price}</p>
 
             <form id="payment-form" onSubmit={handleSubmit}>
                 <label htmlFor="cardNumber">Card Number:</label>

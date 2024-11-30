@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement }) {
+function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement, priceHandler }) {
     // State hooks
     const [selectedSeats, setSelectedSeats] = useState([]);  // Selected seats state
     const [totalPrice, setTotalPrice] = useState(0);  // Total price state
@@ -31,6 +31,7 @@ function SeatForm({ onSeatSelect, theaterId, globalSeats, seatingArrangement }) 
         for (let i = 0; i < selectedSeats.length; i++) {
             totalCost += selectedSeats[i].price;  // Assuming each seat has a 'price' property
         }
+        priceHandler(totalCost);
         setTotalPrice(totalCost);
     };
 

@@ -121,6 +121,12 @@ public class HelloController {
         System.out.println("Ticket info: " + ticketBooking);
         return ResponseEntity.ok(ticketBooking);
     }
+
+    @PostMapping("/purchase")
+    public ResponseEntity<Receipt> purchase(@RequestBody Receipt receipt) {
+        System.out.println("Receipt info: " + receipt);
+        return ResponseEntity.ok(receipt);
+    }
     
     public static class SignInRequest {
         private String username;

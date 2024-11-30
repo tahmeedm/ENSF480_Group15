@@ -18,7 +18,7 @@ const App = () => {
   const [currentTheater, setCurrentTheater] = useState(null);
   const [purchasedTicket, setPurchasedTicket] = useState(null);
   const [seats, setSeats] = useState([]);  // Seats state, initialized as empty array
-
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const [theaters, setTheaters] = useState([
     { id: 1, name: "AcmePlex Downtown" },
@@ -79,6 +79,10 @@ const App = () => {
 
   const handleSignSelection = (isSignUp) => {
     setSignUpIn(isSignUp);
+  };
+
+  const handlePriceChange = (price) => {
+    setTotalPrice(price);
   };
 
   const handleSignIn = (isSignedIn, userInfo) => {
@@ -164,7 +168,7 @@ const App = () => {
             onBack={handleTheaterSelection}  // Passing the handleBack function to MovieSelection
           />
         )}
-        {currentMovie && selectedSeats.length === 0 && <SeatForm onSeatSelect={handleSeatSelection} theaterId={currentTheater.id} globalSeats={setSeats} seatingArrangement={seats} user={userInfo} />}
+        {currentMovie && selectedSeats.length === 0 && <SeatForm onSeatSelect={handleSeatSelection} theaterId={currentTheater.id} globalSeats={setSeats} seatingArrangement={seats} user={userInfo} priceHandler={handlePriceChange} />}
         {selectedSeats.length > 0 && !purchasedTicket && <PaymentForm
           onPurchase={handleTicketPurchase}
           setPaymentInfo={setPaymentInfo}
@@ -173,6 +177,7 @@ const App = () => {
           currentMovie={currentMovie}
           currentTheater={currentTheater}
           seatingArrangement={seats}
+          price={totalPrice}
         />}
         {purchasedTicket && <ReceiptDisplay ticket={purchasedTicket} />}
       </div>
