@@ -1,4 +1,8 @@
 package Group15._Project;
+
+import jakarta.persistence.*;
+
+@Embeddable
 public class PaymentInfo {
 	private String cardNumber;
 	private int cvv;
