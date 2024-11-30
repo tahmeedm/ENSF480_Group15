@@ -1,6 +1,11 @@
 package Group15._Project;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "theatre")
@@ -15,9 +20,8 @@ public class Theatre {
 
 	@Column(name = "description")
 	private String description;
-	private int id;
 
-	public Theatre(String theatreName, String description, int id) {
+	public Theatre(String theatreName, String description, Long id) {
 		this.theatreName = theatreName;
 		this.description = description;
 		this.id = id;
@@ -45,13 +49,5 @@ public class Theatre {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 }

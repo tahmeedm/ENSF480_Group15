@@ -2,12 +2,10 @@ package Group15._Project;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
 @Entity
-@Table(name = "early_screenings")
 public class EarlyScreening extends Screening {
 
     @Column(name = "percent_registered", nullable = false)

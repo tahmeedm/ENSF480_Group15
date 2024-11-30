@@ -2,11 +2,33 @@ package Group15._Project;
 
 import java.util.ArrayList;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+@jakarta.persistence.Entity
+@jakarta.persistence.Inheritance(strategy = jakarta.persistence.InheritanceType.JOINED)
+
 public abstract class User {
+
+    @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+    @Column(name = "name", nullable = true)
     private String name;
+    @Column(name = "email", nullable = true)
     private String email;
+    @Column(name = "address", nullable = true)
     private String address;
+    
+    @Embedded
     private PaymentInfo paymentInfo;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<TicketBooking> ticketBookings = new ArrayList<TicketBooking>();
 
     public User(String name, String email, String address, PaymentInfo paymentInfo) {

@@ -1,6 +1,11 @@
 package Group15._Project;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "OrdinaryUser")
@@ -11,6 +16,10 @@ public class OrdinaryUser extends User {
 
 	@Column(name = "has_admin_fee", nullable = false)
 	private boolean  hasAdminFee;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the ID
+    private Long id;  // This is the primary key for this entity
 
 	public OrdinaryUser(String name, String email, String address, PaymentInfo paymentInfo,
 			String adminFeeExipirationDate, boolean hasAdminFee) {
@@ -35,4 +44,11 @@ public class OrdinaryUser extends User {
 		this.hasAdminFee = hasAdminFee;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

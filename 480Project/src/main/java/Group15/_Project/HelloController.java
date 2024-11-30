@@ -71,9 +71,9 @@ public class HelloController {
         // Placeholder for movies
         // Theatre(String theatreName, String description, int id)
         ArrayList<Theatre> theatres = new ArrayList<>();
-        theatres.add (new Theatre("Theatre 1", "Description 1", 1));
-        theatres.add (new Theatre("Theatre 2", "Description 2", 2));
-        theatres.add (new Theatre("Theatre 3", "Description 3", 3));
+        theatres.add (new Theatre("Theatre 1", "Description 1", (long)1));
+        theatres.add (new Theatre("Theatre 2", "Description 2", (long)2));
+        theatres.add (new Theatre("Theatre 3", "Description 3", (long)3));
 
         // Movie(String name, String description, int id, String releaseDate)
         ArrayList<Movie> movies = new ArrayList<>();
@@ -117,9 +117,9 @@ public class HelloController {
     @GetMapping("/fetchTheatres")
     public ArrayList<Theatre> getTheatres() {
         ArrayList<Theatre> theatres = new ArrayList<>();
-        theatres.add (new Theatre("Theatre 1", "Description 1", 1));
-        theatres.add (new Theatre("Theatre 2", "Description 2", 2));
-        theatres.add (new Theatre("Theatre 3", "Description 3", 3));
+        theatres.add (new Theatre("Theatre 1", "Description 1", (long)1));
+        theatres.add (new Theatre("Theatre 2", "Description 2", (long)2));
+        theatres.add (new Theatre("Theatre 3", "Description 3", (long)3));
         return theatres; // Placeholder for theatres
     }
     
