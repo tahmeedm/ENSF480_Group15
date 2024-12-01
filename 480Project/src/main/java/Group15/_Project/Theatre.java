@@ -21,6 +21,13 @@ public class Theatre {
 	@Column(name = "description")
 	private String description;
 
+	public Theatre() {
+		// Default constructor
+		this.theatreName = null;
+		this.description = null;
+		this.id = null;
+	}
+
 	public Theatre(String theatreName, String description, Long id) {
 		this.theatreName = theatreName;
 		this.description = description;

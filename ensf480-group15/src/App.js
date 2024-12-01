@@ -37,24 +37,39 @@ const FetchScreenings = ({ onDataFetched }) => {
 //fetchTheatres
 const FetchTheatres = ({ onDataFetched }) => {
   useEffect(() => {
-    const apiEndpoint = 'http://localhost:8083/fetchTheatres';
+    const apiEndpoint = 'http://localhost:8083/theatres';
 
     const fetchTheatres = async () => {
       try {
         const response = await fetch(apiEndpoint);
+
+        // Check if the response is okay (status 2xx)
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
         const data = await response.json();
         console.log('Fetched Theatres:', data);
-        onDataFetched(data); // Pass data back to parent component
+
+        // Pass data to the parent component
+        onDataFetched(data);
       } catch (error) {
         console.error('Error fetching theatres:', error);
+        // Optional: You could also handle errors by setting state and displaying a message to users
       }
     };
 
     fetchTheatres();
-  }, [onDataFetched]); // Ensures this runs only once when the component is mounted
 
-  return null; // No UI for this component, it just fetches data
-}
+    // Cleanup function (optional): This ensures that if the component unmounts before the fetch completes, 
+    // the request doesn't try to update state on an unmounted component.
+    return () => {
+      console.log('Cleaning up FetchTheatres effect.');
+    };
+  }, [onDataFetched]); // Dependency array ensures the effect runs only when onDataFetched changes
+
+  return null; // This component doesn't need to render anything directly
+};
 
 const App = () => {
   const [isRegisteredUser, setIsRegisteredUser] = useState(null);

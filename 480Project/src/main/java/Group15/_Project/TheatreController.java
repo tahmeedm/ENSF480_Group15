@@ -3,6 +3,7 @@ package Group15._Project;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 
 // This annotation marks this class as a REST controller, allowing it to handle HTTP requests.
 @RestController
 // Base URL path for all endpoints in this controller.
 @RequestMapping("/theatres")
 public class TheatreController {
+
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Apply CORS to all endpoints
+            .allowedOrigins("http://localhost:3000")  // Allow requests from your frontend (adjust for your frontend's URL)
+            .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allow the relevant HTTP methods
+            .allowedHeaders("*")  // Allow any headers
+            .allowCredentials(true);  // Allow cookies if needed
+    }
+}
 
     // Automatically inject an instance of TheatreService.
     @Autowired
@@ -30,6 +47,7 @@ public class TheatreController {
     public ResponseEntity<List<Theatre>> getAllTheatres() {
         // Fetches all theatres from the service.
         List<Theatre> theatres = theatreService.getAllTheatres();
+        System.out.println(theatres);
         // Returns the list of theatres with an HTTP status of 200 (OK).
         return new ResponseEntity<>(theatres, HttpStatus.OK);
     }
