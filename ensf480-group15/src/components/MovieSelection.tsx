@@ -1,48 +1,58 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import SearchBar from './SearchBar.tsx';
 
 // Function to group screenings by movie and theater
-const groupScreeningsByMovieAndTheater = (screenings, currentTheater) => {
+const groupScreeningsByMovieAndTheater = (screenings) => {
     const grouped = {};
 
     screenings.forEach(screening => {
-        console.log('Processing screening:', screening); // Log each screening
-        if (screening.theatre.id === currentTheater.id) {
-            const { movie, screenDate } = screening;
-            const key = `${movie.id}-${screening.theatre.id}`;
+        const { movie, screenDate, theatre } = screening;
+        const key = `${movie.id}-${theatre.id}`;
 
-            if (!grouped[key]) {
-                grouped[key] = {
-                    movie,
-                    showtimes: [],
-                };
-            }
-
-            grouped[key].showtimes.push(screenDate);
+        if (!grouped[key]) {
+            grouped[key] = {
+                movie,
+                showtimes: [],
+            };
         }
+
+        grouped[key].showtimes.push(screenDate);
     });
 
+    // Return grouped movies with sorted and unique showtimes
     return Object.values(grouped).map(({ movie, showtimes }) => ({
         ...movie,
         showtimes: [...new Set(showtimes)].sort((a, b) => new Date(a) - new Date(b))
     }));
 };
 
-function MovieSelection({ Screenings, currentTheater, onMovieSelect, onBack }) {
+function MovieSelection({ currentTheater, onMovieSelect, onBack }) {
     const [filteredMovies, setFilteredMovies] = useState([]);
+    const [loading, setLoading] = useState(true);  // State for loading
+    const [error, setError] = useState(null);      // State for error handling
 
     useEffect(() => {
-        console.log('Screenings:', Screenings);
-        console.log('Current Theater:', currentTheater);
+        if (!currentTheater?.id) return;  // Make sure we have a valid theater ID
 
-        if (Screenings.length > 0) {
-            const groupedMovies = groupScreeningsByMovieAndTheater(Screenings, currentTheater);
-            console.log('Grouped Movies:', groupedMovies); // Log the grouped movies
-            setFilteredMovies(groupedMovies);
-        } else {
-            console.log('No screenings available');
-        }
-    }, [Screenings, currentTheater]);
+        const fetchScreenings = async () => {
+            setLoading(true);
+            setError(null);  // Reset error state
+
+            try {
+                const response = await axios.get(`http://localhost:8083/screenings/theatre/${currentTheater.id}`);
+                const groupedMovies = groupScreeningsByMovieAndTheater(response.data);
+                setFilteredMovies(groupedMovies);
+            } catch (err) {
+                console.error('Error fetching screenings:', err);
+                setError('Failed to load screenings. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchScreenings();
+    }, [currentTheater]);
 
     const handleMovieClick = (movie) => {
         onMovieSelect(movie);
@@ -58,6 +68,14 @@ function MovieSelection({ Screenings, currentTheater, onMovieSelect, onBack }) {
         );
         setFilteredMovies(filtered);
     };
+
+    if (loading) {
+        return <p>Loading screenings...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return (
         <section id="Screenings-section">

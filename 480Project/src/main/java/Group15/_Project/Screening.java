@@ -24,6 +24,9 @@ public class Screening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "dtype", nullable = false, insertable = false, updatable = false)
+    private String dtype;
+
     @ManyToOne
     @JoinColumn(name = "theatre_id", nullable = false)
     private Theatre theatre;
@@ -47,12 +50,13 @@ public class Screening {
     }
 
     // Constructor
-    public Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList) {
+    public Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList, String dtype) {
         this.theatre = theatre;
         this.movie = movie;
         this.screenDate = screenDate;
         this.openDate = openDate;
         this.seatList = seatList;
+        this.dtype = dtype;
     }
 
     // Getters and Setters

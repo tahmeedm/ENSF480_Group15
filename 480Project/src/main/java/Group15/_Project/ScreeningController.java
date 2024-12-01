@@ -12,12 +12,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 // Annotates this class as a REST controller, allowing it to handle HTTP requests
 @RestController
 // Maps HTTP requests to /screenings to this controller
 @RequestMapping("/screenings")
 public class ScreeningController {
+
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Apply CORS to all endpoints
+            .allowedOrigins("http://localhost:3000")  // Allow requests from your frontend (adjust for your frontend's URL)
+            .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allow the relevant HTTP methods
+            .allowedHeaders("*")  // Allow any headers
+            .allowCredentials(true);  // Allow cookies if needed
+    }
+}
 
     // Injects an instance of ScreeningService into this controller
     @Autowired

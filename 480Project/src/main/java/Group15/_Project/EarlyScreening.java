@@ -15,8 +15,8 @@ public class EarlyScreening extends Screening {
     private String earlyDate;
 
     public EarlyScreening(float percentRegistered, String earlyDate, Theatre theatre, Movie movie, String screenDate,
-                        String openDate, ArrayList<Seat> seatList) {
-        super(theatre, movie, screenDate, openDate, seatList);
+                        String openDate, ArrayList<Seat> seatList, String dtype) {
+        super(theatre, movie, screenDate, openDate, seatList, dtype);
         this.percentRegistered = percentRegistered;
         this.earlyDate = earlyDate;
     }

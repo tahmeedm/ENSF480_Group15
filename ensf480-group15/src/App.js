@@ -12,28 +12,6 @@ import ShowtimeSelection from './components/ShowtimeSelection.tsx';
 import BookedTickets from './components/BookedTickets.tsx';
 import GuestCheckin from './components/GuestCheckin.tsx';
 
-// FetchScreenings as a component that fetches and provides data
-const FetchScreenings = ({ onDataFetched }) => {
-  useEffect(() => {
-    const apiEndpoint = 'http://localhost:8083/fetchScreenings';
-
-    const fetchScreenings = async () => {
-      try {
-        const response = await fetch(apiEndpoint);
-        const data = await response.json();
-        console.log('Fetched Screenings:', data);
-        onDataFetched(data); // Pass data back to parent component
-      } catch (error) {
-        console.error('Error fetching movies:', error);
-      }
-    };
-
-    fetchScreenings();
-  }, [onDataFetched]); // Ensures this runs only once when the component is mounted
-
-  return null; // No UI for this component, it just fetches data
-};
-
 //fetchTheatres
 const FetchTheatres = ({ onDataFetched }) => {
   useEffect(() => {
@@ -182,7 +160,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <FetchScreenings onDataFetched={handleScreenFetched} />
       <FetchTheatres onDataFetched={handleTheaterFetched} />
       <header onClick={resetFields}>
         <h1>AcmePlex Theater Ticket Reservation</h1>
@@ -209,7 +186,6 @@ const App = () => {
         }
         {currentTheater && selectedSeats.length === 0 && (
           <MovieSelection
-            Screenings={screenings}
             currentTheater={currentTheater}
             onMovieSelect={handleMovieSelection}
             onBack={handleTheaterSelection}  // Passing the handleBack function to MovieSelection

@@ -64,55 +64,55 @@ public class HelloController {
         return seats;
     }
 
-    @GetMapping("/fetchScreenings")
-    public ArrayList<Screening> getFilmScreenings() {
+    // @GetMapping("/fetchScreenings")
+    // public ArrayList<Screening> getFilmScreenings() {
         
 
-        // Placeholder for movies
-        // Theatre(String theatreName, String description, int id)
-        ArrayList<Theatre> theatres = new ArrayList<>();
-        theatres.add (new Theatre("Theatre 1", "Description 1", (long)1));
-        theatres.add (new Theatre("Theatre 2", "Description 2", (long)2));
-        theatres.add (new Theatre("Theatre 3", "Description 3", (long)3));
+    //     // Placeholder for movies
+    //     // Theatre(String theatreName, String description, int id)
+    //     ArrayList<Theatre> theatres = new ArrayList<>();
+    //     theatres.add (new Theatre("Theatre 1", "Description 1", (long)1));
+    //     theatres.add (new Theatre("Theatre 2", "Description 2", (long)2));
+    //     theatres.add (new Theatre("Theatre 3", "Description 3", (long)3));
 
-        // Movie(String name, String description, int id, String releaseDate)
-        ArrayList<Movie> movies = new ArrayList<>();
-        movies.add (new Movie("Movie 1", "Description 1", 1, "2023-01-01"));
-        movies.add (new Movie("Movie 2", "Description 2", 2, "2023-02-02"));
-        movies.add (new Movie("Movie 3", "Description 3", 3, "2023-03-03"));
-        movies.add (new Movie("Movie 4", "Description 4", 4, "2023-04-04"));
-        movies.add (new Movie("Movie 5", "Description 5", 5, "2023-05-05"));
-        movies.add (new Movie("Movie 6", "Description 6", 6, "2023-06-06"));
-        movies.add (new Movie("Movie 7", "Description 7", 7, "2023-07-07"));
-        movies.add (new Movie("Movie 8", "Description 8", 8, "2023-08-08"));
-        movies.add (new Movie("Movie 9", "Description 9", 9, "2023-09-09"));
-        movies.add (new Movie("Movie 10", "Description 10", 10, "2023-10-10"));
+    //     // Movie(String name, String description, int id, String releaseDate)
+    //     ArrayList<Movie> movies = new ArrayList<>();
+    //     movies.add (new Movie("Movie 1", "Description 1", 1, "2023-01-01"));
+    //     movies.add (new Movie("Movie 2", "Description 2", 2, "2023-02-02"));
+    //     movies.add (new Movie("Movie 3", "Description 3", 3, "2023-03-03"));
+    //     movies.add (new Movie("Movie 4", "Description 4", 4, "2023-04-04"));
+    //     movies.add (new Movie("Movie 5", "Description 5", 5, "2023-05-05"));
+    //     movies.add (new Movie("Movie 6", "Description 6", 6, "2023-06-06"));
+    //     movies.add (new Movie("Movie 7", "Description 7", 7, "2023-07-07"));
+    //     movies.add (new Movie("Movie 8", "Description 8", 8, "2023-08-08"));
+    //     movies.add (new Movie("Movie 9", "Description 9", 9, "2023-09-09"));
+    //     movies.add (new Movie("Movie 10", "Description 10", 10, "2023-10-10"));
 
-        //Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList)
-        //Include multiple screenings for each movie
+    //     //Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList)
+    //     //Include multiple screenings for each movie
 
-        ArrayList<Screening> screenings = new ArrayList<>();
-        screenings.add (new Screening(theatres.get(0), movies.get(0), "2023-01-01", "2023-01-01", null));
-        screenings.add (new Screening(theatres.get(1), movies.get(1), "2023-02-02", "2023-02-02", null));
-        screenings.add (new Screening(theatres.get(2), movies.get(2), "2023-03-03", "2023-03-03", null));
-        screenings.add (new Screening(theatres.get(0), movies.get(3), "2023-04-04", "2023-04-04", null));
-        screenings.add (new Screening(theatres.get(1), movies.get(4), "2023-05-05", "2023-05-05", null));
-        screenings.add (new Screening(theatres.get(2), movies.get(5), "2023-06-06", "2023-06-06", null));
-        screenings.add (new Screening(theatres.get(0), movies.get(6), "2023-07-07", "2023-07-07", null));
-        screenings.add (new Screening(theatres.get(1), movies.get(7), "2023-08-08", "2023-08-08", null));
-        screenings.add (new Screening(theatres.get(2), movies.get(8), "2023-09-09", "2023-09-09", null));
-        screenings.add (new Screening(theatres.get(0), movies.get(9), "2023-10-10", "2023-10-10", null));
-        screenings.add (new Screening(theatres.get(0), movies.get(0), "2023-01-02", "2023-01-01", null));
-        screenings.add (new Screening(theatres.get(1), movies.get(1), "2023-02-03", "2023-02-02", null));
-        screenings.add (new Screening(theatres.get(2), movies.get(2), "2023-03-04", "2023-03-03", null));
-        screenings.add (new Screening(theatres.get(0), movies.get(3), "2023-04-05", "2023-04-04", null));
-        screenings.add (new Screening(theatres.get(1), movies.get(4), "2023-05-06", "2023-05-05", null));
-        screenings.add (new Screening(theatres.get(2), movies.get(5), "2023-06-07", "2023-06-06", null));
-        screenings.add (new Screening(theatres.get(0), movies.get(6), "2023-07-08", "2023-07-07", null));
-        screenings.add (new Screening(theatres.get(1), movies.get(7), "2023-08-09", "2023-08-08", null));
+    //     ArrayList<Screening> screenings = new ArrayList<>();
+    //     screenings.add (new Screening(theatres.get(0), movies.get(0), "2023-01-01", "2023-01-01", null));
+    //     screenings.add (new Screening(theatres.get(1), movies.get(1), "2023-02-02", "2023-02-02", null));
+    //     screenings.add (new Screening(theatres.get(2), movies.get(2), "2023-03-03", "2023-03-03", null));
+    //     screenings.add (new Screening(theatres.get(0), movies.get(3), "2023-04-04", "2023-04-04", null));
+    //     screenings.add (new Screening(theatres.get(1), movies.get(4), "2023-05-05", "2023-05-05", null));
+    //     screenings.add (new Screening(theatres.get(2), movies.get(5), "2023-06-06", "2023-06-06", null));
+    //     screenings.add (new Screening(theatres.get(0), movies.get(6), "2023-07-07", "2023-07-07", null));
+    //     screenings.add (new Screening(theatres.get(1), movies.get(7), "2023-08-08", "2023-08-08", null));
+    //     screenings.add (new Screening(theatres.get(2), movies.get(8), "2023-09-09", "2023-09-09", null));
+    //     screenings.add (new Screening(theatres.get(0), movies.get(9), "2023-10-10", "2023-10-10", null));
+    //     screenings.add (new Screening(theatres.get(0), movies.get(0), "2023-01-02", "2023-01-01", null));
+    //     screenings.add (new Screening(theatres.get(1), movies.get(1), "2023-02-03", "2023-02-02", null));
+    //     screenings.add (new Screening(theatres.get(2), movies.get(2), "2023-03-04", "2023-03-03", null));
+    //     screenings.add (new Screening(theatres.get(0), movies.get(3), "2023-04-05", "2023-04-04", null));
+    //     screenings.add (new Screening(theatres.get(1), movies.get(4), "2023-05-06", "2023-05-05", null));
+    //     screenings.add (new Screening(theatres.get(2), movies.get(5), "2023-06-07", "2023-06-06", null));
+    //     screenings.add (new Screening(theatres.get(0), movies.get(6), "2023-07-08", "2023-07-07", null));
+    //     screenings.add (new Screening(theatres.get(1), movies.get(7), "2023-08-09", "2023-08-08", null));
 
-        return screenings; // Placeholder for movies
-    }
+    //     return screenings; // Placeholder for movies
+    // }
 
     @GetMapping("/fetchTheatres")
     public ArrayList<Theatre> getTheatres() {
