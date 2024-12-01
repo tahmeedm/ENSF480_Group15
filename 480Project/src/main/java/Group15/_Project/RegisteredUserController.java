@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 
 @RestController
 @RequestMapping("/users")
@@ -52,6 +54,9 @@ public class RegisteredUserController {
 
     @GetMapping("/signIn/{username}/{password}")
     public ResponseEntity<RegisteredUser> signIn(@PathVariable String username, @PathVariable String password) {
+        if (username == null || password == null) {
+            return ResponseEntity.badRequest().build();
+        }
         Optional<RegisteredUser> user = registeredUserService.findByUsernameAndPassword(username, password);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -93,6 +98,15 @@ public class RegisteredUserController {
         RegisteredUser savedUser = registeredUserService.save(registeredUser);
         return ResponseEntity.ok(savedUser);
     }
+
+    @ControllerAdvice
+    public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
+}
+
 
     /**
      * Handles DELETE requests to remove a user by their ID.

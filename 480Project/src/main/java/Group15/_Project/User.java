@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.FetchType;
 
 @jakarta.persistence.Entity
 @jakarta.persistence.Inheritance(strategy = jakarta.persistence.InheritanceType.JOINED)
@@ -22,7 +23,7 @@ public abstract class User {
 
     @Column(name = "name", nullable = true)
     private String name;
-    @Column(name = "email", nullable = true)
+    @Column(name = "email", nullable = true, unique = true)
     private String email;
     @Column(name = "address", nullable = true)
     private String address;
@@ -30,8 +31,16 @@ public abstract class User {
     @Embedded
     @Column(nullable = true)
     private PaymentInfo paymentInfo;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TicketBooking> ticketBookings = new ArrayList<TicketBooking>();
+
+    public User() {
+        // Default constructor
+        this.name = null;
+        this.email = "";
+        this.address = null;
+        this.paymentInfo = null;
+    }
 
     public User(String name, String email, String address, PaymentInfo paymentInfo) {
         this.name = name;
