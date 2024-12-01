@@ -10,7 +10,7 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
     List<Screening> findByTheatre(Theatre theatre);
 
     //find by theatre id
-    @Query("SELECT s FROM Screening s JOIN FETCH s.screeningSeatList WHERE s.theatre.id = :theatreId")
+    // @Query("SELECT s FROM Screening s JOIN FETCH s.screeningSeatList WHERE s.theatre.id = :theatreId")
     List<Screening> findByTheatreId(Theatre theatre);
 
     List<Screening> findByMovie(Movie movie);

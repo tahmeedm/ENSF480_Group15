@@ -14,8 +14,10 @@ function SeatForm({
 
     // Function to load seats from API
     const loadSeats = () => {
-        console.log('Fetching seats for selectedScreening:', selectedScreening);
-        axios.post('http://localhost:8083/fetchSeats', selectedScreening)
+        console.log(`Fetching seats for selectedScreening:`, selectedScreening);
+
+        // Use GET request instead of POST and update URL format
+        axios.get(`http://localhost:8083/seats/screening/${selectedScreening.id}`)
             .then((response) => {
                 if (response && response.data) {
                     console.log('Response data:', response.data);
@@ -28,6 +30,7 @@ function SeatForm({
                 console.error('Error fetching seats:', error);
             });
     };
+
 
 
     // Update total price based on selected seats

@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * This annotation marks this class as a REST controller, allowing it to handle HTTP requests.
@@ -31,6 +34,20 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("/seats")
 public class SeatController {
+	
+	
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Apply CORS to all endpoints
+            .allowedOrigins("http://localhost:3000")  // Allow requests from your frontend (adjust for your frontend's URL)
+            .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allow the relevant HTTP methods
+            .allowedHeaders("*")  // Allow any headers
+            .allowCredentials(true);  // Allow cookies if needed
+    }
+}
 
 	/**
 	 * This annotation injects an instance of the SeatService class, which encapsulates the business logic for
@@ -69,8 +86,11 @@ public class SeatController {
 	@GetMapping("/screening/{screeningId}")
 	public ResponseEntity<List<Seat>> getSeatsByScreening(@PathVariable Long screeningId) {
 		Optional<Screening> screening = screeningRepository.findById(screeningId);
+		System.out.println("Screening ID: " + screeningId);
 		if (screening.isPresent()) {
+			System.out.println("Screening: " + screening.get());
 			List<Seat> seats = seatService.getSeatsByScreening(screening.get());
+			System.out.println("Seats: " + seats);
 			return new ResponseEntity<>(seats, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
