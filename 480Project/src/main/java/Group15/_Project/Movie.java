@@ -1,7 +1,10 @@
 package Group15._Project;
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "movie")
@@ -17,11 +20,19 @@ public class Movie {
 	@Column(name = "movie_description")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private ArrayList<Screening> screenings = new ArrayList<Screening>();
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Screening> screenings = new ArrayList<Screening>();
 
 	@Column(name = "release_date", nullable = false)
 	private String releaseDate;
+
+	public Movie() {
+		// Default constructor
+		this.name = null;
+		this.description = null;
+		this.releaseDate = null;
+	}
 
 	public Movie(String name, String description, int id, String releaseDate) {
 		this.name = name;
@@ -54,11 +65,11 @@ public class Movie {
 		this.id = id;
 	}
 
-	public ArrayList<Screening> getScreenings() {
+	public List<Screening> getScreenings() {
 		return screenings;
 	}
 
-	public void setScreenings(ArrayList<Screening> screenings) {
+	public void setScreenings(List<Screening> screenings) {
 		this.screenings = screenings;
 	}
 

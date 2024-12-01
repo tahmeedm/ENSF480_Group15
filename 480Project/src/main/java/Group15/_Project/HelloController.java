@@ -50,19 +50,19 @@ public class HelloController {
         }
     }
 
-    @PostMapping("/fetchSeats")
-    public ArrayList<Seat> getSeats(@RequestBody Screening arg) {
-        System.out.println("Screening info: " + arg);
+    // @PostMapping("/fetchSeats")
+    // public ArrayList<Seat> getSeats(@RequestBody Screening arg) {
+    //     System.out.println("Screening info: " + arg);
 
-        // Get Seats from some service or API (placeholder logic for now)
-        ArrayList<Seat> seats = new ArrayList<>();
-        for (int i = 1; i <= 100; i++) {
-            seats.add(new Seat(null, 15, i));  // Sample seat creation
-        }
+    //     // Get Seats from some service or API (placeholder logic for now)
+    //     ArrayList<Seat> seats = new ArrayList<>();
+    //     for (int i = 1; i <= 100; i++) {
+    //         seats.add(new Seat(null, 15, i));  // Sample seat creation
+    //     }
 
-        System.out.println("Seats: " + seats);
-        return seats;
-    }
+    //     System.out.println("Seats: " + seats);
+    //     return seats;
+    // }
 
     // @GetMapping("/fetchScreenings")
     // public ArrayList<Screening> getFilmScreenings() {

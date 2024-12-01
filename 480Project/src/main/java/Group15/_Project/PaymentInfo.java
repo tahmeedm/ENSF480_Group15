@@ -8,6 +8,13 @@ public class PaymentInfo {
 	private int cvv;
 	private String expiryDate;
 
+	// Default constructor
+	public PaymentInfo() {
+		this.cardNumber = null;
+		this.cvv = 0;
+		this.expiryDate = null;
+	}
+
 	public PaymentInfo(String cardNumber, int cvv, String expiryDate) {
 		this.cardNumber = cardNumber;
 		this.cvv = cvv;

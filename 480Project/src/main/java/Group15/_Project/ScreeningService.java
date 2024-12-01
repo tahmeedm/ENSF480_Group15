@@ -1,8 +1,10 @@
 package Group15._Project;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ScreeningService {
@@ -12,6 +14,10 @@ public class ScreeningService {
 
     public List<Screening> findByTheatre(Theatre theatre) {
         return screeningRepository.findByTheatre(theatre);
+    }
+
+    public List<Screening> findByTheatreId(Theatre theatre) {
+        return screeningRepository.findByTheatreId(theatre);
     }
 
     public List<Screening> findByMovie(Movie movie) {

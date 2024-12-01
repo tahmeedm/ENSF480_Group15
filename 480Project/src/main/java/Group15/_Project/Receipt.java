@@ -31,6 +31,13 @@ public class Receipt {
 	@Column(name = "total_price", nullable = false)
 	private float totalPrice;
 
+	public Receipt() {
+		this.paymentInfo = null;
+		this.transactionDate = null;
+		this.seatList = null;
+		this.totalPrice = 0;
+	}
+
 	public Receipt(PaymentInfo paymentInfo, String transactionDate, ArrayList<Seat> seatList, float totalPrice) {
 		this.paymentInfo = paymentInfo;
 		this.transactionDate = transactionDate;

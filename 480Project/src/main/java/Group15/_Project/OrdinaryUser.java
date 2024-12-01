@@ -21,6 +21,12 @@ public class OrdinaryUser extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the ID
     private Long id;  // This is the primary key for this entity
 
+	public OrdinaryUser() {
+		super(null, null, null, null);
+		this.adminFeeExipirationDate = "";
+		this.hasAdminFee = false;
+	}
+
 	public OrdinaryUser(String name, String email, String address, PaymentInfo paymentInfo,
 			String adminFeeExipirationDate, boolean hasAdminFee) {
 		super(name, email, address, paymentInfo);

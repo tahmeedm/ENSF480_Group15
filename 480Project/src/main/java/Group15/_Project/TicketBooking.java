@@ -1,6 +1,14 @@
 package Group15._Project;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ticket_booking")
@@ -17,6 +25,11 @@ public class TicketBooking {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "receipt_id", nullable = false)
 	private Receipt receipt;
+
+	public TicketBooking() {
+		this.screening = null;
+		this.receipt = null;
+	}
 
 	public TicketBooking(Screening screening, Receipt receipt) {
 		this.screening = screening;

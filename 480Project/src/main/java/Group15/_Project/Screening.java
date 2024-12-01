@@ -1,62 +1,49 @@
 package Group15._Project;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "screenings")
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class Screening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "dtype", nullable = false, insertable = false, updatable = false)
-    private String dtype;
-
     @ManyToOne
-    @JoinColumn(name = "theatre_id", nullable = false)
+    @JoinColumn(name = "theatre_id", nullable = true)
     private Theatre theatre;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false)
+    @JoinColumn(name = "movie_id", nullable =  true)
     private Movie movie;
 
-    @Column(name = "screen_date", nullable = false)
+    @Column(name = "screen_date", nullable =  true)
     private String screenDate;
 
-    @Column(name = "open_date", nullable = false)
+    @Column(name = "open_date", nullable =  true)
     private String openDate;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Seat> seatList;
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Seat> screeningSeatList;
 
     //default constructor
     public Screening() {
-        this.seatList = new ArrayList<>();
+        this.screeningSeatList = new ArrayList<>();
     }
 
     // Constructor
-    public Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList, String dtype) {
+    public Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList) {
         this.theatre = theatre;
         this.movie = movie;
         this.screenDate = screenDate;
         this.openDate = openDate;
-        this.seatList = seatList;
-        this.dtype = dtype;
+        this.screeningSeatList = seatList;
     }
 
     // Getters and Setters
@@ -85,16 +72,36 @@ public class Screening {
         return openDate;
     }
 
-    public ArrayList<Seat> getSeatList() {
-        return seatList;
+    public List<Seat> getScreeningSeatList() {
+        return screeningSeatList;
     }
 
     public void addSeat(Seat seat) {
-        seatList.add(seat);
+        screeningSeatList.add(seat);
     }
 
     public void removeSeat(Seat seat) {
-        seatList.remove(seat);
+        screeningSeatList.remove(seat);
+    }
+
+    public void setTheatre(Theatre theatre) {
+        this.theatre = theatre;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public void setScreenDate(String screenDate) {
+        this.screenDate = screenDate;
+    }
+
+    public void setOpenDate(String openDate) {
+        this.openDate = openDate;
+    }
+
+    public void setScreeningSeatList(List<Seat> screeningSeatList) {
+        this.screeningSeatList = screeningSeatList;
     }
 
 }

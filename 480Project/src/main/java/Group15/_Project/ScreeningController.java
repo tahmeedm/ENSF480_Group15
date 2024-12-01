@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -50,16 +50,20 @@ public class ScreeningController {
     // Handles GET requests for screenings by theatre ID
     @GetMapping("/theatre/{theatreId}")
     public ResponseEntity<List<Screening>> getScreeningsByTheatre(@PathVariable Long theatreId) {
-        // Retrieves the theatre by ID
+        System.out.println("Fetching theatre by ID: " + theatreId);
+    
         Optional<Theatre> theatreOptional = theatreRepository.findById(theatreId);
-        // If the theatre is not found, return a 404 response
         if (!theatreOptional.isPresent()) {
+            System.out.println("Theatre not found for ID: " + theatreId);
             return ResponseEntity.notFound().build();
         }
-        // If found, retrieve the list of screenings for that theatre
+    
         Theatre theatre = theatreOptional.get();
+        System.out.println("Fetched theatre: " + theatre);
+    
         List<Screening> screenings = screeningService.findByTheatre(theatre);
-        // Return 404 if no screenings are found, otherwise return the list of screenings
+        System.out.println("Screenings for theatre: " + screenings);
+    
         return screenings.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(screenings);
     }
 
