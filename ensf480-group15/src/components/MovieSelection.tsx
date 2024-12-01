@@ -27,7 +27,7 @@ const groupScreeningsByMovieAndTheater = (screenings) => {
     }));
 };
 
-function MovieSelection({ currentTheater, onMovieSelect, onBack }) {
+function MovieSelection({ currentTheater, onMovieSelect, onBack, setScreenings }) {
     const [filteredMovies, setFilteredMovies] = useState([]);
     const [loading, setLoading] = useState(true);  // State for loading
     const [error, setError] = useState(null);      // State for error handling
@@ -41,6 +41,7 @@ function MovieSelection({ currentTheater, onMovieSelect, onBack }) {
 
             try {
                 const response = await axios.get(`http://localhost:8083/screenings/theatre/${currentTheater.id}`);
+                console.log('Response data:', response.data);
                 const groupedMovies = groupScreeningsByMovieAndTheater(response.data);
                 setFilteredMovies(groupedMovies);
             } catch (err) {

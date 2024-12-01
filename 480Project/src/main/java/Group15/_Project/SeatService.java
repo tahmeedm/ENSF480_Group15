@@ -15,6 +15,11 @@ public class SeatService {
         return seatRepository.findByOccupant(user);
     }
 
+    // getSeatsByScreening
+    public List<Seat> getSeatsByScreening(Screening screening) {
+        return seatRepository.findByScreening(screening);
+    }
+
     public Seat updateSeat(Long id, Seat seatDetails) {
         if (seatRepository.existsById(id)) {
             seatDetails.setId(id);

@@ -15,6 +15,8 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
 
     List<Screening> findByMovie(Movie movie);
 
+    List<Screening> findByMovieAndScreenDate(Movie movie, String screenDate);
+
     List<Screening> findByScreenDate(String screenDate);
 }
 

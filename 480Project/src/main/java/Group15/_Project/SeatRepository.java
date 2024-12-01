@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SeatRepository extends JpaRepository<Seat, Long> {
     Optional<Seat> findBySeatNumber(int seatNumber);
 
+    List<Seat> findByScreening(Screening screening);
+
     List<Seat> findByOccupant(User occupant);
 }
 

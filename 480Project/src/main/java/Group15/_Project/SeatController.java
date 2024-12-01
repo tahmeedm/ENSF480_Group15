@@ -46,6 +46,9 @@ public class SeatController {
     @Autowired
     private RegisteredUserRepository registeredUserRepository;
 
+	@Autowired
+	private ScreeningRepository screeningRepository;
+
 	/**
 	 * This annotation specifies that this method handles GET requests to the /seats/user/{userId} endpoint.
 	 * The userId parameter is a path variable, and is annotated as such with the @PathVariable annotation.
@@ -62,6 +65,16 @@ public class SeatController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+	@GetMapping("/screening/{screeningId}")
+	public ResponseEntity<List<Seat>> getSeatsByScreening(@PathVariable Long screeningId) {
+		Optional<Screening> screening = screeningRepository.findById(screeningId);
+		if (screening.isPresent()) {
+			List<Seat> seats = seatService.getSeatsByScreening(screening.get());
+			return new ResponseEntity<>(seats, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 
 	/**
 	 * This annotation specifies that this method handles PUT requests to the /seats/{id} endpoint.

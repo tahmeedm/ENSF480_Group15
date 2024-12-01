@@ -122,21 +122,38 @@ const App = () => {
 
   // Find selected screening based on currentMovie, currentTheater, and showTime
   const findSelectedScreening = () => {
-    return screenings.find((screening) => {
-      return (
-        screening.movie.name === currentMovie?.name &&
-        screening.theatre.theatreName === currentTheater?.theatreName &&
-        screening.screenDate === showTime
-      );
-    });
+    // return screenings.find((screening) => {
+    //   return (
+    //     screening.movie.name === currentMovie?.name &&
+    //     screening.theatre.theatreName === currentTheater?.theatreName &&
+    //     screening.screenDate === showTime
+    //   );
+    // });
+
+    // Call api to get the selected screening
+    // /movie/{movieId}/date/{screenDate}
+
+    const apiEndpoint = `http://localhost:8083/screenings/movie/${currentMovie.id}/date/${showTime}`;
+    console.log(apiEndpoint);
+
+    fetch(apiEndpoint)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Selected Screening:", data[0]);
+        setSelectedScreening(data[0])
+        return data[0];
+      })
+      .catch((error) => {
+        console.error('Error fetching selected screening:', error);
+      });
   }
 
   // useEffect to call findSelectedScreening when currentMovie, currentTheater, and showTime are set
   useEffect(() => {
     if (currentMovie && currentTheater && showTime) {
-      const selected = findSelectedScreening();
-      setSelectedScreening(selected); // Update the selected screening state
-      console.log('Selected Screening:', selected);
+      console.log("Calling findSelectedScreening with:", currentMovie, currentTheater, showTime);
+      findSelectedScreening();
+      console.log('The Selected Screening:', selectedScreening);
     }
   }, [currentMovie, currentTheater, showTime, screenings]); // Re-run whenever any of these values change
 
@@ -189,6 +206,7 @@ const App = () => {
             currentTheater={currentTheater}
             onMovieSelect={handleMovieSelection}
             onBack={handleTheaterSelection}  // Passing the handleBack function to MovieSelection
+            setScreenings={setScreenings}
           />
         )}
         {currentMovie && selectedSeats.length === 0 && (

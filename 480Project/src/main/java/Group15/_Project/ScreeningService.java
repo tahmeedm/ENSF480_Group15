@@ -28,6 +28,10 @@ public class ScreeningService {
         return screeningRepository.findByScreenDate(screenDate);
     }
 
+    public List<Screening> findByMovieAndScreenDate(Movie movie, String screenDate) {
+        return screeningRepository.findByMovieAndScreenDate(movie, screenDate);
+    }
+
     public Screening save(Screening screening) {
         return screeningRepository.save(screening);
     }

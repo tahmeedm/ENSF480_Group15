@@ -4,9 +4,9 @@ function ShowtimeSelection({ Showtimes, selectShowtime, selectedShowtime }) {
 
     const handleShowtimeClick = (showtime) => {
         // Update the selected showtime in the parent component
+        console.log(showtime);
         selectShowtime(showtime);
     }
-
 
     return (
         <section id="showtime-selection-section">

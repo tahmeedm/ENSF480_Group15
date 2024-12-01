@@ -92,6 +92,22 @@ public class ScreeningController {
         return screenings.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(screenings);
     }
 
+    // Handles GET request for movie id and screen date
+    @GetMapping("/movie/{movieId}/date/{screenDate}")
+    public ResponseEntity<List<Screening>> getScreeningsByMovieAndScreenDate(@PathVariable Long movieId, @PathVariable String screenDate) {
+        // Retrieves the movie by ID
+        Optional<Movie> movieOptional = movieRepository.findById(movieId);
+        // If the movie is not found, return a 404 response
+        if (!movieOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        // If found, retrieve the list of screenings for that movie and date
+        Movie movie = movieOptional.get();
+        List<Screening> screenings = screeningService.findByMovieAndScreenDate(movie, screenDate);
+        // Return 404 if no screenings are found, otherwise return the list of screenings
+        return screenings.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(screenings);
+    }
+
     // Handles POST requests to create a new screening
     @PostMapping("/create")
     public ResponseEntity<Screening> createScreening(@RequestBody Screening screening) {
