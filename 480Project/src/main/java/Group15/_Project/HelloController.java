@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -50,19 +49,19 @@ public class HelloController {
         }
     }
 
-    @PostMapping("/fetchSeats")
-    public ArrayList<Seat> getSeats(@RequestBody Screening arg) {
-        System.out.println("Screening info: " + arg);
+    // @PostMapping("/fetchSeats")
+    // public ArrayList<Seat> getSeats(@RequestBody Screening arg) {
+    //     System.out.println("Screening info: " + arg);
 
-        // Get Seats from some service or API (placeholder logic for now)
-        ArrayList<Seat> seats = new ArrayList<>();
-        for (int i = 1; i <= 100; i++) {
-            seats.add(new Seat(null, 15, i));  // Sample seat creation
-        }
+    //     // Get Seats from some service or API (placeholder logic for now)
+    //     ArrayList<Seat> seats = new ArrayList<>();
+    //     for (int i = 1; i <= 100; i++) {
+    //         seats.add(new Seat(null, 15, i));  // Sample seat creation
+    //     }
 
-        System.out.println("Seats: " + seats);
-        return seats;
-    }
+    //     System.out.println("Seats: " + seats);
+    //     return seats;
+    // }
 
     @GetMapping("/fetchScreenings")
     public ArrayList<Screening> getFilmScreenings() {
@@ -123,53 +122,53 @@ public class HelloController {
         return theatres; // Placeholder for theatres
     }
     
-    @RestController
-    @RequestMapping("/signin")
-    public class SignInController {
+    // @RestController
+    // @RequestMapping("/signin")
+    // public class SignInController {
     
-        @PostMapping
-        public ResponseEntity<User> signIn(@RequestBody SignInRequest signInRequest) {
-            String username = signInRequest.getUsername();
-            String password = signInRequest.getPassword();
-            System.out.println("Username: " + username);
-            System.out.println("Password: " + password);
+    //     @PostMapping
+    //     public ResponseEntity<User> signIn(@RequestBody SignInRequest signInRequest) {
+    //         String username = signInRequest.getUsername();
+    //         String password = signInRequest.getPassword();
+    //         System.out.println("Username: " + username);
+    //         System.out.println("Password: " + password);
     
-            // Placeholder for creating payment info
-            PaymentInfo paymentInfo = new PaymentInfo("1234 5678 9012 2123", 123, "12/24");
+    //         // Placeholder for creating payment info
+    //         PaymentInfo paymentInfo = new PaymentInfo("1234 5678 9012 2123", 123, "12/24");
             
-            System.out.println("Payment info: " + paymentInfo);
-            System.out.println("Payment info: " + paymentInfo.getCardNumber());
-            System.out.println("Payment info: " + paymentInfo.getExpiryDate());
-            System.out.println("Payment info: " + paymentInfo.getCvv());
+    //         System.out.println("Payment info: " + paymentInfo);
+    //         System.out.println("Payment info: " + paymentInfo.getCardNumber());
+    //         System.out.println("Payment info: " + paymentInfo.getExpiryDate());
+    //         System.out.println("Payment info: " + paymentInfo.getCvv());
 
-            // Placeholder user
-            RegisteredUser user = new RegisteredUser("John Doe", "U4k3i@example.com", "123 Main St", paymentInfo, password, username);
+    //         // Placeholder user
+    //         RegisteredUser user = new RegisteredUser("John Doe", "U4k3i@example.com", "123 Main St", paymentInfo, password, username);
             
-            System.out.println("User info: " + user);
-            System.out.println("User info: " + user.getName());
-            System.out.println("User info: " + user.getEmail());
-            System.out.println("User info: " + user.getAddress());
-            System.out.println("User info: " + user.getPaymentInfo());
-            System.out.println("User info: " + user.getPassword());
-            System.out.println("User info: " + user.getUsername());
+    //         System.out.println("User info: " + user);
+    //         System.out.println("User info: " + user.getName());
+    //         System.out.println("User info: " + user.getEmail());
+    //         System.out.println("User info: " + user.getAddress());
+    //         System.out.println("User info: " + user.getPaymentInfo());
+    //         System.out.println("User info: " + user.getPassword());
+    //         System.out.println("User info: " + user.getUsername());
             
 
-            // Return the User object as JSON
-            return ResponseEntity.ok(user);
-        }
-    }
+    //         // Return the User object as JSON
+    //         return ResponseEntity.ok(user);
+    //     }
+    // }
 
-    @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody RegisteredUser user) {
-        System.out.println("User info: " + user);
-        System.out.println("User info: " + user.getName());
-        System.out.println("User info: " + user.getEmail());
-        System.out.println("User info: " + user.getAddress());
-        System.out.println("User info: " + user.getPaymentInfo());
-        System.out.println("User info: " + user.getPassword());
-        System.out.println("User info: " + user.getUsername());
-        return ResponseEntity.ok(user);
-    }
+    // @PostMapping("/signup")
+    // public ResponseEntity<User> signUp(@RequestBody RegisteredUser user) {
+    //     System.out.println("User info: " + user);
+    //     System.out.println("User info: " + user.getName());
+    //     System.out.println("User info: " + user.getEmail());
+    //     System.out.println("User info: " + user.getAddress());
+    //     System.out.println("User info: " + user.getPaymentInfo());
+    //     System.out.println("User info: " + user.getPassword());
+    //     System.out.println("User info: " + user.getUsername());
+    //     return ResponseEntity.ok(user);
+    // }
 
     @PostMapping("/bookTicket")
     public ResponseEntity<TicketBooking> bookTicket(@RequestBody TicketBooking ticketBooking) {

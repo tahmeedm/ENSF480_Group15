@@ -1,6 +1,13 @@
 package Group15._Project;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Seats")
@@ -11,8 +18,11 @@ public class Seat {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "registered_user_id")
-    private RegisteredUser occupant;
+    @JoinColumn(name = "registered_user_id", nullable = true)
+    private RegisteredUser registeredUser;
+
+    @Column(name = "ordinary_user_id", nullable = true)
+    private String ordinaryUserId;
 
     @Column(name = "price", nullable = false)
     private float price;
@@ -21,8 +31,9 @@ public class Seat {
     private int seatNumber;
 
     // Constructor
-    public Seat(RegisteredUser occupant, float price, int seatNumber) {
-        this.occupant = occupant;
+    public Seat(RegisteredUser registeredUser, String ordinaryUserId, float price, int seatNumber) {
+        this.registeredUser = registeredUser;
+        this.ordinaryUserId = ordinaryUserId;
         this.price = price;
         this.seatNumber = seatNumber;
     }
@@ -36,12 +47,20 @@ public class Seat {
         this.id = id;
     }
 
-    public RegisteredUser getOccupant() {
-        return occupant;
+    public RegisteredUser getRegisteredUser() {
+        return registeredUser;
     }
 
-    public void setOccupant(RegisteredUser occupant) {
-        this.occupant = occupant;
+    public void setRegisteredUser(RegisteredUser registeredUser) {
+        this.registeredUser = registeredUser;
+    }
+
+    public String getOrdinaryUserId() {
+        return ordinaryUserId;
+    }
+
+    public void setOrdinaryUserId(String ordinaryUserId) {
+        this.ordinaryUserId = ordinaryUserId;
     }
 
     public float getPrice() {

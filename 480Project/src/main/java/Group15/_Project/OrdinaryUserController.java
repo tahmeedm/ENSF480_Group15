@@ -39,9 +39,9 @@ public class OrdinaryUserController {
     @GetMapping("/admin-fee-expiration/{expirationDate}")
     public ResponseEntity<OrdinaryUser> getUserByAdminFeeExpirationDate(@PathVariable String expirationDate) {
         /**
-         * This calls the findByAdminFeeExipirationDate method in the OrdinaryUserService class.
+         * This calls the findByAdminFeeExpirationDate method in the OrdinaryUserService class.
          */
-        Optional<OrdinaryUser> user = ordinaryUserService.findByAdminFeeExipirationDate(expirationDate);
+        Optional<OrdinaryUser> user = ordinaryUserService.findByAdminFeeExpirationDate(expirationDate);
 
         /**
          * If the user exists, return it. Otherwise, return a 404.

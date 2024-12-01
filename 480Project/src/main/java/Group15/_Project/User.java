@@ -20,12 +20,8 @@ public abstract class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-    @Column(name = "name", nullable = true)
-    private String name;
     @Column(name = "email", nullable = true)
     private String email;
-    @Column(name = "address", nullable = true)
-    private String address;
     
     @Embedded
     @Column(nullable = true)
@@ -33,10 +29,8 @@ public abstract class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TicketBooking> ticketBookings = new ArrayList<TicketBooking>();
 
-    public User(String name, String email, String address, PaymentInfo paymentInfo) {
-        this.name = name;
+    public User(String email, PaymentInfo paymentInfo) {
         this.email = email;
-        this.address = address;
         this.paymentInfo = paymentInfo;
     }
 
@@ -51,14 +45,6 @@ public abstract class User {
     public void showMovies() {
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }   
-
     public String getEmail() {
         return email;
     }   
@@ -66,14 +52,6 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }   
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public PaymentInfo getPaymentInfo() {
         return paymentInfo;

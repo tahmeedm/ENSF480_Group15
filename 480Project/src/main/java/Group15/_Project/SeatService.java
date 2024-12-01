@@ -1,9 +1,9 @@
 package Group15._Project;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SeatService {
@@ -15,15 +15,29 @@ public class SeatService {
         return seatRepository.findByOccupant(user);
     }
 
+    public Seat assignRegisteredUser(Long seatId, RegisteredUser user) {
+        Seat seat = (Seat) seatRepository.findById(seatId).orElseThrow();
+        seat.setRegisteredUser(user);
+        seat.setOrdinaryUserId(null);
+        return (Seat) seatRepository.save(seat);
+    }
+
+    public Seat assignOrdinaryUser(Long seatId, String ordId) {
+        Seat seat = (Seat) seatRepository.findById(seatId).orElseThrow();
+        seat.setRegisteredUser(null);
+        seat.setOrdinaryUserId(ordId);
+        return (Seat) seatRepository.save(seat);
+    }
+
     public Seat updateSeat(Long id, Seat seatDetails) {
         if (seatRepository.existsById(id)) {
             seatDetails.setId(id);
-            return seatRepository.save(seatDetails);
+            return (Seat) seatRepository.save(seatDetails);
         }
         return null;
     }
 
     public Seat createSeat(Seat seat) {
-        return seatRepository.save(seat);
+        return (Seat) seatRepository.save(seat);
     }
 }

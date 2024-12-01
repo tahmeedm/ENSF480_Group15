@@ -10,8 +10,8 @@ public class OrdinaryUserService {
     @Autowired
     private OrdinaryUserRepository ordinaryUserRepository;
 
-    public Optional<OrdinaryUser> findByAdminFeeExipirationDate(String expirationDate) {
-        return ordinaryUserRepository.findByAdminFeeExipirationDate(expirationDate);
+    public Optional<OrdinaryUser> findByAdminFeeExpirationDate(String expirationDate) {
+        return ordinaryUserRepository.findByAdminFeeExpirationDate(expirationDate);
     }
 
     public Optional<OrdinaryUser> findByHasAdminFee(boolean hasAdminFee) {

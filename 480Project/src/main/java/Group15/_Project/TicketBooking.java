@@ -1,6 +1,14 @@
 package Group15._Project;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ticket_booking")
@@ -11,6 +19,10 @@ public class TicketBooking {
 	private Long id;
 
 	@ManyToOne
+	@JoinColumn(name = "registered_user_id", nullable = true)
+	private RegisteredUser registeredUser;
+
+	@ManyToOne
 	@JoinColumn(name = "screening_id", nullable = false)
 	private Screening screening;
 
@@ -18,10 +30,19 @@ public class TicketBooking {
 	@JoinColumn(name = "receipt_id", nullable = false)
 	private Receipt receipt;
 
-	public TicketBooking(Screening screening, Receipt receipt) {
+	public TicketBooking(RegisteredUser registeredUser, Screening screening, Receipt receipt) {
+		this.registeredUser = registeredUser;
 		this.screening = screening;
 		this.receipt = receipt;
 	}
+
+	public RegisteredUser getRegisteredUser() {
+        return registeredUser;
+    }
+
+    public void setRegisteredUser(RegisteredUser registeredUser) {
+        this.registeredUser = registeredUser;
+    }
 
 	public Long getId() {
         return id;
@@ -38,5 +59,13 @@ public class TicketBooking {
 	public void setScreening(Screening screening) {
 		this.screening = screening;
 	}
+
+	public Receipt getReceipt() {
+        return receipt;
+    }
+
+    public void setReceipt(Receipt receipt) {
+        this.receipt = receipt;
+    }
 
 }
