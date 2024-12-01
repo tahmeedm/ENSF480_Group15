@@ -1,6 +1,6 @@
 package Group15._Project;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class PaymentInfo {

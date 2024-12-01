@@ -18,7 +18,7 @@ function SignInForm({ onUserSelect }) {
         }
 
         //Real API Call
-        axios.post('http://localhost:8083/signin', { username, password })
+        axios.get(`http://localhost:8083/users/signIn/${username}/${password}`)
             .then(response => {
                 // Assuming response.data contains the user object
                 setSignInSuccess(true);

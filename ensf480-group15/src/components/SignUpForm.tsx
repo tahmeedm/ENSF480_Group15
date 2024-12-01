@@ -8,6 +8,7 @@ function SignUpForm({ onUserSelect }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [address, setAddress] = useState('');
+    const [paymentInfo, setPaymentInfo] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
@@ -29,16 +30,19 @@ function SignUpForm({ onUserSelect }) {
         const userData = {
             name,
             email,
-            username,
-            password,
             address,
+            paymentInfo,
+            password,
+            username,
         };
+
+        console.log(userData);
 
         // Reset any previous error or success messages
         setErrorMessage('');
         setSuccessMessage('');
 
-        axios.post('http://localhost:8083/signup', userData)
+        axios.post('http://localhost:8083/users/register', userData)
             .then((response) => {
                 // User created successfully
                 setSuccessMessage('User created successfully! Logging you in!');

@@ -41,6 +41,11 @@ public class Screening {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<Seat> seatList;
 
+    //default constructor
+    public Screening() {
+        this.seatList = new ArrayList<>();
+    }
+
     // Constructor
     public Screening(Theatre theatre, Movie movie, String screenDate, String openDate , ArrayList<Seat> seatList) {
         this.theatre = theatre;

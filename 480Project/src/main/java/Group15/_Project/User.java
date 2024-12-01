@@ -1,6 +1,7 @@
 package Group15._Project;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,9 +28,10 @@ public abstract class User {
     private String address;
     
     @Embedded
+    @Column(nullable = true)
     private PaymentInfo paymentInfo;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<TicketBooking> ticketBookings = new ArrayList<TicketBooking>();
+    private List<TicketBooking> ticketBookings = new ArrayList<TicketBooking>();
 
     public User(String name, String email, String address, PaymentInfo paymentInfo) {
         this.name = name;
@@ -81,7 +83,7 @@ public abstract class User {
         this.paymentInfo = paymentInfo;
     }
 
-    public ArrayList<TicketBooking> getTicketBookings() {
+    public List<TicketBooking> getTicketBookings() {
         return ticketBookings;
     }
 

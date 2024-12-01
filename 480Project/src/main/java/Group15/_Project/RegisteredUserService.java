@@ -14,6 +14,10 @@ public class RegisteredUserService {
         return registeredUserRepository.findByUsername(username);
     }
 
+    public Optional<RegisteredUser> findByUsernameAndPassword(String username, String password) {
+        return registeredUserRepository.findByUsernameAndPassword(username, password);
+    }
+
     public Optional<RegisteredUser> findByEmail(String email) {
         return registeredUserRepository.findByEmail(email);
     }

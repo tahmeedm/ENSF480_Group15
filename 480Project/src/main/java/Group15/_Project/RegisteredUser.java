@@ -21,6 +21,13 @@ public class RegisteredUser extends User {
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
+	public RegisteredUser() {
+        // Default constructor
+        super(null, null, null, null);
+        this.password = "";
+        this.username = "";
+    }
+
 	public RegisteredUser(String name, String email, String address, PaymentInfo paymentInfo, String password,
 			String username) {
 		super(name, email, address, paymentInfo);
