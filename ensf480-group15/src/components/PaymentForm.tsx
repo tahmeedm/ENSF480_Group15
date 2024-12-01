@@ -44,7 +44,7 @@ function PaymentForm({
         //     seatCost: seatCost,
         // };
 
-        const purchaseDetails = {
+        const TicketBooking = {
             screening: {
                 theatre: currentTheater,
                 movie: currentMovie,
@@ -60,18 +60,18 @@ function PaymentForm({
             },
         };
 
-        onPurchase(purchaseDetails);
-
         // Send Form Data to API
-        axios.post('http://localhost:8083/purchase', purchaseDetails)
+        axios.post('http://localhost:8083/ticket-bookings', TicketBooking)
             .then(response => {
                 console.log('Purchase successful:', response.data);
+                onPurchase(TicketBooking);
             })
             .catch(error => {
                 console.error('Error making purchase:', error);
+                alert('Error making purchase. Please try again.');
             });
 
-        console.log('Purchase Details:', purchaseDetails);
+        console.log('Purchase Details:', TicketBooking);
     };
 
     // Autofill form when paymentInfo changes

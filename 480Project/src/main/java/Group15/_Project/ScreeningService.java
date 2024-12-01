@@ -32,6 +32,11 @@ public class ScreeningService {
         return screeningRepository.findByMovieAndScreenDate(movie, screenDate);
     }
 
+    // findByTheatreAndMovieAndScreenDateAndOpenDate
+    public List<Screening> findByTheatreAndMovieAndScreenDateAndOpenDate(Theatre theatre, Movie movie, String screenDate, String openDate) {
+        return screeningRepository.findByTheatreAndMovieAndScreenDateAndOpenDate(theatre, movie, screenDate, openDate);
+    }
+
     public Screening save(Screening screening) {
         return screeningRepository.save(screening);
     }

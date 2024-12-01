@@ -18,7 +18,7 @@ public class TicketBooking {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "screening_id", nullable = false)
 	private Screening screening;
 
@@ -50,6 +50,14 @@ public class TicketBooking {
 
 	public void setScreening(Screening screening) {
 		this.screening = screening;
+	}
+
+	public Receipt getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
 	}
 
 }

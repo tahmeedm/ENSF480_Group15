@@ -10,7 +10,13 @@ import java.util.Optional;
 public class TicketBookingService {
 
     @Autowired
-    private TicketBookingRepository ticketBookingRepository;
+    private final TicketBookingRepository ticketBookingRepository;
+    private final ScreeningRepository screeningRepository;
+
+    public TicketBookingService(TicketBookingRepository ticketBookingRepository, ScreeningRepository screeningRepository) {
+        this.ticketBookingRepository = ticketBookingRepository;
+        this.screeningRepository = screeningRepository;
+    }
 
     public List<TicketBooking> getAllTicketBookings() {
         return ticketBookingRepository.findAll();
@@ -28,8 +34,22 @@ public class TicketBookingService {
         return ticketBookingRepository.findByReceipt(receipt);
     }
 
-    public TicketBooking createTicketBooking(TicketBooking ticketBooking) {
-        return ticketBookingRepository.save(ticketBooking);
+    public TicketBooking createTicketBooking(TicketBooking ticketBooking, Long screeningId) {
+        Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
+        if (optionalScreening.isPresent()) {
+            Screening screening = optionalScreening.get();
+            ticketBooking.setScreening(screening);
+            try {
+                TicketBooking savedTicketBooking = ticketBookingRepository.save(ticketBooking); // Save ticket booking with linked screening
+                System.out.println("Returning ticket booking with ID: " + savedTicketBooking.getId() + " and Screening ID: " + screeningId);
+                return savedTicketBooking;
+            } catch (Exception e) {
+                System.out.println("An error occurred while saving the ticket booking: " + e.getMessage());
+                return null;
+            }
+        } else {
+            throw new RuntimeException("Screening not found with ID: " + screeningId);
+        }
     }
 
     public TicketBooking updateTicketBooking(Long id, TicketBooking ticketBookingDetails) {

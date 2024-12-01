@@ -109,6 +109,7 @@ const App = () => {
   };
 
   const handleSeatSelection = (seats) => {
+    console.log('Selected seats:', seats);
     setSelectedSeats(seats);
   };
 

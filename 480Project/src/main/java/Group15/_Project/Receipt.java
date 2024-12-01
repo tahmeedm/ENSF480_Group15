@@ -1,5 +1,6 @@
 package Group15._Project;
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,7 +27,7 @@ public class Receipt {
 	private String transactionDate;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private ArrayList<Seat> seatList;
+	private List<Seat> seatList = new ArrayList<>();
 
 	@Column(name = "total_price", nullable = false)
 	private float totalPrice;
@@ -53,7 +54,7 @@ public class Receipt {
 		return transactionDate;
 	}
 
-	public ArrayList<Seat> getSeatList() {
+	public List<Seat> getSeatList() {
 		return seatList;
 	}
 
@@ -69,7 +70,7 @@ public class Receipt {
 		this.transactionDate = transactionDate;
 	}
 
-	public void setSeatList(ArrayList<Seat> seatList) {
+	public void setSeatList(List<Seat> seatList) {
 		this.seatList = seatList;
 	}
 

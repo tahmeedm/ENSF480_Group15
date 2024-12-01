@@ -3,6 +3,7 @@ package Group15._Project;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * This class is a REST controller for handling ticket booking-related HTTP requests.
@@ -23,9 +28,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ticket-bookings")
 public class TicketBookingController {
 
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Apply CORS to all endpoints
+            .allowedOrigins("http://localhost:3000")  // Allow requests from your frontend (adjust for your frontend's URL)
+            .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allow the relevant HTTP methods
+            .allowedHeaders("*")  // Allow any headers
+            .allowCredentials(true);  // Allow cookies if needed
+    }
+}
+
     // Injects the TicketBookingService to interact with ticket booking data
     @Autowired
-    private TicketBookingService ticketBookingService;
+    private final TicketBookingService ticketBookingService;
 
     // Injects the ScreeningRepository to access screening data
     @Autowired
@@ -34,6 +52,10 @@ public class TicketBookingController {
     // Injects the ReceiptRepository to access receipt data
     @Autowired
     private ReceiptRepository receiptRepository;
+
+    public TicketBookingController(TicketBookingService ticketBookingService) {
+        this.ticketBookingService = ticketBookingService;
+    }
 
     /**
      * Handles GET requests to retrieve all ticket bookings.
@@ -92,9 +114,57 @@ public class TicketBookingController {
      */
     @PostMapping
     public ResponseEntity<TicketBooking> createTicketBooking(@RequestBody TicketBooking ticketBooking) {
-        TicketBooking createdTicketBooking = ticketBookingService.createTicketBooking(ticketBooking);
-        return new ResponseEntity<>(createdTicketBooking, HttpStatus.CREATED);
+        // Find an existing Screening entity that matches the specified object
+        List<Screening> screenings = screeningRepository.findByTheatreAndMovieAndScreenDateAndOpenDate(
+            ticketBooking.getScreening().getTheatre(),
+            ticketBooking.getScreening().getMovie(),
+            ticketBooking.getScreening().getScreenDate(),
+            ticketBooking.getScreening().getOpenDate()
+        );
+
+        if (!screenings.isEmpty()) {
+            Screening screening = screenings.get(0);
+            
+            if (screening == null) {
+                // If no matching Screening entity is found, create a new one
+                screening = ticketBooking.getScreening();
+                screeningRepository.save(screening);
+            }
+        
+            // Set the found or created Screening entity on the TicketBooking object
+            ticketBooking.setScreening(screening);
+        
+            // Save the TicketBooking entity
+            System.out.println("Screening found with ID: " + screening.getId());
+            ticketBookingService.createTicketBooking(ticketBooking, (long) screening.getId());
+            System.out.println("TicketBooking created with ID: " + ticketBooking.getId());
+            return new ResponseEntity<>(ticketBooking, HttpStatus.CREATED);
+        } else {
+            // handle the case where no Screening is found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
+    // @PostMapping
+    // public ResponseEntity<TicketBooking> createTicketBooking(@RequestBody TicketBooking ticketBooking, @RequestParam Long screeningIdLong) {
+    //     Optional<Screening> optionalScreening = screeningRepository.findById(screeningIdLong);
+
+    //     if (optionalScreening.isPresent()) {
+    //         // Set the found Screening entity on the TicketBooking object
+    //         Screening existingScreening = optionalScreening.get();
+    //         ticketBooking.setScreening(existingScreening);
+    //         System.out.println("Screening found with ID: " + screeningIdLong);
+    //     }
+    //     else {
+    //         // handle the case where no Screening is found
+    //         System.out.println("No Screening found with ID: " + screeningIdLong);
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+
+    //     TicketBooking savedTicketBooking = ticketBookingService.createTicketBooking(ticketBooking, screeningIdLong);
+    //     System.out.println("Ticket booking created: " + savedTicketBooking);
+    //     return new ResponseEntity<>(savedTicketBooking, HttpStatus.CREATED);
+    // }
 
     /**
      * Handles PUT requests to update an existing ticket booking.
