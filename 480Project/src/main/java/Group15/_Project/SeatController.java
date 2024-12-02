@@ -46,6 +46,12 @@ public class SeatController {
     @Autowired
     private RegisteredUserRepository registeredUserRepository;
 
+	@Autowired
+	private ScreeningRepository screeningRepository;
+
+	@Autowired
+	private SeatRepository seatRepository;
+
 	/**
 	 * This annotation specifies that this method handles GET requests to the /seats/user/{userId} endpoint.
 	 * The userId parameter is a path variable, and is annotated as such with the @PathVariable annotation.
@@ -72,13 +78,21 @@ public class SeatController {
 	 * status code.
 	 */
     @PutMapping("/{id}")
-    public ResponseEntity<Seat> updateSeat(@PathVariable Long id, @RequestBody Seat seatDetails) {
-        Seat updatedSeat = seatService.updateSeat(id, seatDetails);
-        if (updatedSeat != null) {
-            return new ResponseEntity<>(updatedSeat, HttpStatus.OK);
-        }
+public ResponseEntity<Seat> updateSeat(@PathVariable Long id, @RequestBody Seat seatDetails) {
+    Optional<Seat> seatOptional = seatRepository.findById(id);
+    if (seatOptional.isPresent()) {
+        Seat seatToUpdate = seatOptional.get();
+        // Update seat fields with the provided details
+        seatToUpdate.setSeatNumber(seatDetails.getSeatNumber());
+        seatToUpdate.setIsAvailable(seatDetails.isAvailable());
+        seatToUpdate.setScreening(seatDetails.getScreening());
+        // Save the updated seat
+        seatRepository.save(seatToUpdate);
+        return new ResponseEntity<>(seatToUpdate, HttpStatus.OK);
+    } else {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+}
 
 	/**
 	 * This annotation specifies that this method handles POST requests to the /seats endpoint.
@@ -92,4 +106,3 @@ public class SeatController {
         return new ResponseEntity<>(createdSeat, HttpStatus.CREATED);
     }
 }
-

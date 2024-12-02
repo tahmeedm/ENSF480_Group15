@@ -43,7 +43,12 @@ public class ScreeningController {
         // If found, retrieve the list of screenings for that theatre
         Theatre theatre = theatreOptional.get();
         List<Screening> screenings = screeningService.findByTheatre(theatre);
-        // Return 404 if no screenings are found, otherwise return the list of screenings
+        System.out.println("Screenings for theatre: " + screenings);
+        // detailed print
+        for (Screening screening : screenings) {
+            System.out.println(screening.toString());
+        }
+    
         return screenings.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(screenings);
     }
 

@@ -55,9 +55,9 @@ function PaymentForm({
             receipt: {
                 paymentInfo: formData,
                 transactionDate: new Date().toISOString(),
-                seatList: selectedSeats,
                 totalPrice: price
             },
+            seats: selectedSeats,
         };
 
         onPurchase(purchaseDetails);
