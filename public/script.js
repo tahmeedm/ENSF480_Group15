@@ -320,21 +320,21 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('http://localhost:3000/TestProgram',{
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'  // Tell the server that the request is JSON
+            'Content-Type': 'application/json'  // request is JSON
             },
             body: JSON.stringify({ requestInput})
-            // body: "Debug1."
+            
         })
             .then(response => {
                 // Processing Response
                 if (!response.ok) {
                     throw new Error('Network Response Failure');
                 }
-                return response.text();  // can use text(), json(), blob(), etc.
+                return response.text();  
             })
             .then(data => {
                 document.getElementById('output').textContent = data;
-                console.log(data);  // Processing of acquired web content
+                console.log(data);  
             })
             .catch(error => {
                 console.error('Error:', error);
