@@ -1,13 +1,6 @@
 package Group15._Project;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Seats")
@@ -28,8 +21,12 @@ public class Seat {
     private int seatNumber;
 
     @ManyToOne
-    @JoinColumn(name = "screening_id", nullable = false)
-    private Screening screening;
+	@JoinColumn(name = "screening_id", nullable = false)
+	private Screening screening;
+
+    @ManyToOne
+    @JoinColumn(name = "ticket_booking_id", nullable=true)
+    private TicketBooking ticketBooking;
 
     // Default constructor
     public Seat() {
@@ -37,14 +34,16 @@ public class Seat {
         this.price = 0;
         this.seatNumber = 0;
         this.screening = null;
+        this.ticketBooking = null;
     }
 
     // Constructor
-    public Seat(RegisteredUser occupant, float price, int seatNumber, Screening screening) {
+    public Seat(RegisteredUser occupant, float price, int seatNumber, Screening screening, TicketBooking ticketBooking) {
         this.occupant = occupant;
         this.price = price;
         this.seatNumber = seatNumber;
         this.screening = screening;
+        this.ticketBooking = ticketBooking;
     }
 
     // Getters and Setters
@@ -78,5 +77,33 @@ public class Seat {
 
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public TicketBooking getTicketBooking() {
+        return ticketBooking;
+    }
+
+    public void setTicketBooking(TicketBooking ticketBooking) {
+        this.ticketBooking = ticketBooking;
+    }
+
+    // isAvailable
+    public boolean isAvailable() {
+        return this.occupant == null;
+    }
+
+    // getScreening
+    public Screening getScreening() {
+        return this.screening;
+    }
+
+    // setIsAvailable
+    public void setIsAvailable(boolean isAvailable) {
+        this.occupant = isAvailable ? null : this.occupant;
+    }
+
+    // setScreening
+    public void setScreening(Screening screening) {
+        this.screening = screening;
     }
 }

@@ -1,14 +1,8 @@
 package Group15._Project;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import java.util.List;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ticket_booking")
@@ -26,14 +20,19 @@ public class TicketBooking {
 	@JoinColumn(name = "receipt_id", nullable = false)
 	private Receipt receipt;
 
+	@OneToMany(mappedBy = "ticketBooking", cascade = CascadeType.ALL)
+	private List<Seat> seats;
+
 	public TicketBooking() {
 		this.screening = null;
 		this.receipt = null;
+		this.seats = null;
 	}
 
-	public TicketBooking(Screening screening, Receipt receipt) {
+	public TicketBooking(Screening screening, Receipt receipt, List<Seat> seats) {
 		this.screening = screening;
 		this.receipt = receipt;
+		this.seats = seats;
 	}
 
 	public Long getId() {
@@ -58,6 +57,14 @@ public class TicketBooking {
 
 	public void setReceipt(Receipt receipt) {
 		this.receipt = receipt;
+	}
+
+	public List<Seat> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(List<Seat> seats) {
+		this.seats = seats;
 	}
 
 }
