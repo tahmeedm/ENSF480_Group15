@@ -37,30 +37,36 @@ public class TicketBookingService {
         return ticketBookingRepository.findByReceipt(receipt);
     }
 
-    public TicketBooking createTicketBooking(TicketBooking ticketBooking, Long screeningId, List<Seat> seats) {
-        Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
-        if (optionalScreening.isPresent()) {
-            Screening screening = optionalScreening.get();
-            ticketBooking.setScreening(screening);
-
-            for (Seat seat : seats) {
-                seatService.createSeat(seat);
-                seat.setTicketBooking(ticketBooking);
-            }
-            ticketBooking.setSeats(seats);
-
-            try {
-                TicketBooking savedTicketBooking = ticketBookingRepository.save(ticketBooking); // Save ticket booking with linked screening
-                System.out.println("Returning ticket booking with ID: " + savedTicketBooking.getId() + " and Screening ID: " + screeningId);
-                return savedTicketBooking;
-            } catch (Exception e) {
-                System.out.println("An error occurred while saving the ticket booking: " + e.getMessage());
-                return null;
-            }
-        } else {
-            throw new RuntimeException("Screening not found with ID: " + screeningId);
-        }
+    // TicketBooking ticketBooking = ticketBookingService.createTicketBooking((Screening) screening.get(), receipt, seatList);
+    public TicketBooking createTicketBooking(Screening screening, Receipt receipt, List<Seat> seats) {
+        TicketBooking ticketBooking = new TicketBooking(screening, receipt, seats);
+        return ticketBookingRepository.save(ticketBooking);
     }
+
+    // public TicketBooking createTicketBooking(TicketBooking ticketBooking, Long screeningId, List<Seat> seats) {
+    //     Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
+    //     if (optionalScreening.isPresent()) {
+    //         Screening screening = optionalScreening.get();
+    //         ticketBooking.setScreening(screening);
+
+    //         for (Seat seat : seats) {
+    //             seatService.createSeat(seat);
+    //             seat.setTicketBooking(ticketBooking);
+    //         }
+    //         ticketBooking.setSeats(seats);
+
+    //         try {
+    //             TicketBooking savedTicketBooking = ticketBookingRepository.save(ticketBooking); // Save ticket booking with linked screening
+    //             System.out.println("Returning ticket booking with ID: " + savedTicketBooking.getId() + " and Screening ID: " + screeningId);
+    //             return savedTicketBooking;
+    //         } catch (Exception e) {
+    //             System.out.println("An error occurred while saving the ticket booking: " + e.getMessage());
+    //             return null;
+    //         }
+    //     } else {
+    //         throw new RuntimeException("Screening not found with ID: " + screeningId);
+    //     }
+    // }
 
     public TicketBooking updateTicketBooking(Long id, TicketBooking ticketBookingDetails) {
         if (ticketBookingRepository.existsById(id)) {

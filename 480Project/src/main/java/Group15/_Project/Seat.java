@@ -1,6 +1,7 @@
 package Group15._Project;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Seats")
@@ -20,6 +21,7 @@ public class Seat {
     @Column(name = "seat_number", nullable = false)
     private int seatNumber;
 
+    @JsonIgnore
     @ManyToOne
 	@JoinColumn(name = "screening_id", nullable = false)
 	private Screening screening;

@@ -1,8 +1,10 @@
 package Group15._Project;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -115,38 +117,128 @@ public class TicketBookingController {
      * @param ticketBooking the ticket booking to create.
      * @return the created ticket booking with HTTP status CREATED.
      */
-    @PostMapping
-    public ResponseEntity<TicketBooking> createTicketBooking(@RequestBody TicketBooking ticketBooking) {
-        // Find an existing Screening entity that matches the specified object
-        List<Screening> screenings = screeningRepository.findByTheatreAndMovieAndScreenDateAndOpenDate(
-            ticketBooking.getScreening().getTheatre(),
-            ticketBooking.getScreening().getMovie(),
-            ticketBooking.getScreening().getScreenDate(),
-            ticketBooking.getScreening().getOpenDate()
-        );
 
-        if (!screenings.isEmpty()) {
-            Screening screening = screenings.get(0);
-            
-            if (screening == null) {
-                // If no matching Screening entity is found, create a new one
-                screening = ticketBooking.getScreening();
-                screeningRepository.save(screening);
-            }
-        
-            // Set the found or created Screening entity on the TicketBooking object
-            ticketBooking.setScreening(screening);
-        
-            // Save the TicketBooking entity
-            System.out.println("Screening found with ID: " + screening.getId());
-            ticketBookingService.createTicketBooking(ticketBooking, (long) screening.getId(), (List<Seat>) ticketBooking.getSeats());
-            System.out.println("TicketBooking created with ID: " + ticketBooking.getId());
-            return new ResponseEntity<>(ticketBooking, HttpStatus.CREATED);
-        } else {
-            // handle the case where no Screening is found
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping
+    public ResponseEntity<String> createTicketBooking(@RequestBody TicketBookingRequest request) {
+        System.out.println("Received data");
+        return ResponseEntity.ok("Hello, World!");
+    }
+
+    public class TicketBookingRequest {
+        private Long screeningId;
+        private PaymentInfo paymentInfo;
+        private String transactionDate;
+        private float totalPrice;
+        private List<Long> seats;
+    
+        public Long getScreeningId() {
+            return screeningId;
+        }
+    
+        public void setScreeningId(Long screeningId) {
+            this.screeningId = screeningId;
+        }
+    
+        public PaymentInfo getPaymentInfo() {
+            return paymentInfo;
+        }
+    
+        public void setPaymentInfo(PaymentInfo paymentInfo) {
+            this.paymentInfo = paymentInfo;
+        }
+    
+        public String getTransactionDate() {
+            return transactionDate;
+        }
+    
+        public void setTransactionDate(String transactionDate) {
+            this.transactionDate = transactionDate;
+        }
+    
+        public float getTotalPrice() {
+            return totalPrice;
+        }
+    
+        public void setTotalPrice(float totalPrice) {
+            this.totalPrice = totalPrice;
+        }
+    
+        public List<Long> getSeats() {
+            return seats;
+        }
+    
+        public void setSeats(List<Long> seats) {
+            this.seats = seats;
         }
     }
+    // @PostMapping
+    // public ResponseEntity<TicketBooking> createTicketBooking(
+    //     @RequestParam Long screeningId,
+    //     @RequestBody PaymentInfo paymentInfo,
+    //     @RequestParam String transactionDate,
+    //     @RequestParam float totalPrice,
+    //     @RequestParam List<Long> seats
+    // ) {
+        
+    //     System.out.println("Received data: " + screeningId + ", " + paymentInfo + ", " + transactionDate + ", " + totalPrice + ", " + seats);
+    //     if (screeningId == null || paymentInfo == null || transactionDate == null || seats == null) {
+    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    //     }
+    
+    //     try {
+    //         Optional<Screening> screening = screeningRepository.findById(screeningId);
+    //         if (screening.isEmpty()) {
+    //             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //         }
+    
+    //         List<Seat> seatList = seatRepository.findAllById(seats);
+    //         if (seatList.isEmpty()) {
+    //             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //         }
+    
+    //         Receipt receipt = new Receipt(paymentInfo, transactionDate, totalPrice);
+    //         // TicketBooking(Screening screening, Receipt receipt, List<Seat> seats)
+    
+    //         TicketBooking ticketBooking = ticketBookingService.createTicketBooking((Screening) screening.get(), receipt, seatList);
+    //         return new ResponseEntity<>(ticketBooking, HttpStatus.CREATED);
+    //     } catch (Exception e) {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
+
+    
+    // @PostMapping
+    // public ResponseEntity<TicketBooking> createTicketBooking(@RequestBody TicketBooking ticketBooking) {
+    //     // Find an existing Screening entity that matches the specified object
+    //     List<Screening> screenings = screeningRepository.findByTheatreAndMovieAndScreenDateAndOpenDate(
+    //         ticketBooking.getScreening().getTheatre(),
+    //         ticketBooking.getScreening().getMovie(),
+    //         ticketBooking.getScreening().getScreenDate(),
+    //         ticketBooking.getScreening().getOpenDate()
+    //     );
+
+    //     if (!screenings.isEmpty()) {
+    //         Screening screening = screenings.get(0);
+            
+    //         if (screening == null) {
+    //             // If no matching Screening entity is found, create a new one
+    //             screening = ticketBooking.getScreening();
+    //             screeningRepository.save(screening);
+    //         }
+        
+    //         // Set the found or created Screening entity on the TicketBooking object
+    //         ticketBooking.setScreening(screening);
+        
+    //         // Save the TicketBooking entity
+    //         System.out.println("Screening found with ID: " + screening.getId());
+    //         ticketBookingService.createTicketBooking(ticketBooking, (long) screening.getId(), (List<Seat>) ticketBooking.getSeats());
+    //         System.out.println("TicketBooking created with ID: " + ticketBooking.getId());
+    //         return new ResponseEntity<>(ticketBooking, HttpStatus.CREATED);
+    //     } else {
+    //         // handle the case where no Screening is found
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
 
     // @PostMapping
     // public ResponseEntity<TicketBooking> createTicketBooking(@RequestBody TicketBooking ticketBooking, @RequestParam Long screeningIdLong) {
@@ -192,5 +284,7 @@ public class TicketBookingController {
         return ticketBookingService.deleteTicketBooking(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                                                             : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    
 }
 

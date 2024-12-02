@@ -60,7 +60,7 @@ const App = () => {
   const [seats, setSeats] = useState([]);  // Seats state, initialized as empty array
   const [totalPrice, setTotalPrice] = useState(0);
   const [showTime, setShowTime] = useState(null);
-
+  const [proceedToReceipt, setProceedToReceipt] = useState(false);
   const [theaters, setTheaters] = useState([]);
   const [selectedScreening, setSelectedScreening] = useState(null);
   const [screenings, setScreenings] = useState([]);
@@ -229,6 +229,7 @@ const App = () => {
         {selectedSeats.length > 0 && !purchasedTicket &&
           <PaymentForm
             onPurchase={handleTicketPurchase}
+            proceedToReceipt={setProceedToReceipt}
             setPaymentInfo={setPaymentInfo}
             paymentInfo={paymentInfo}
             selectedSeats={selectedSeats}
@@ -237,9 +238,10 @@ const App = () => {
             seatingArrangement={seats}
             price={totalPrice}
             screenDate={showTime}
+            selectedScreening={selectedScreening}
           />
         }
-        {purchasedTicket &&
+        {proceedToReceipt === true &&
           <ReceiptDisplay ticket={purchasedTicket} />
         }
       </div>

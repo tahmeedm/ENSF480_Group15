@@ -3,14 +3,12 @@ import React, { useEffect, useState } from 'react';
 
 function PaymentForm({
     onPurchase,
+    proceedToReceipt,
     setPaymentInfo,
     paymentInfo,
     selectedSeats,
-    currentMovie,
-    currentTheater,
-    seatingArrangement,
     price,
-    screenDate,
+    selectedScreening,
 }) {
     const [formData, setFormData] = useState({
         cardNumber: paymentInfo?.cardNumber || '',
@@ -34,44 +32,61 @@ function PaymentForm({
         // Send payment info to parent
         setPaymentInfo(formData);
 
-        // const purchaseDetails = {
-        //     movieName: currentMovie.name,
-        //     theaterName: currentTheater.name,
-        //     showtime: currentMovie.showtimes[0], // Assuming we use the first showtime, modify as needed
-        //     seats: selectedSeats,
-        //     totalPrice: totalPrice,
-        //     paymentInfo: formData,
-        //     seatCost: seatCost,
-        // };
+        // Extract necessary details
+        const transactionDate = new Date().toISOString();
+        const totalPrice = price;
+        const selectedSeatIds = selectedSeats.map((seat) => seat.id); // Use seat.id instead of seatNumber
 
-        const TicketBooking = {
-            screening: {
-                theatre: currentTheater,
-                movie: currentMovie,
-                screenDate: screenDate,
-                openDate: currentMovie.releaseDate,
-                seatList: seatingArrangement,
-            },
-            receipt: {
-                paymentInfo: formData,
-                transactionDate: new Date().toISOString(),
-                totalPrice: price
-            },
-            seats: selectedSeats,
-        };
+        console.log("debug");
+        console.log("selectedScreening:", selectedScreening.id);
 
-        // Send Form Data to API
-        axios.post('http://localhost:8083/ticket-bookings', TicketBooking)
-            .then(response => {
-                console.log('Purchase successful:', response.data);
-                onPurchase(TicketBooking);
+        fetch('http://localhost:8083/ticket-bookings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                screeningId: selectedScreening.id,
+                paymentInfo: {
+                    cardNumber: formData.cardNumber,
+                    expiryDate: formData.expiryDate,
+                    cvv: formData.cvv
+                },
+                transactionDate: transactionDate,
+                totalPrice: totalPrice,
+                seats: selectedSeatIds
             })
-            .catch(error => {
-                console.error('Error making purchase:', error);
-                alert('Error making purchase. Please try again.');
-            });
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+            })
+            .then(data => console.log("Response data:", data));
 
-        console.log('Purchase Details:', TicketBooking);
+        // axios.post('http://localhost:8083/ticket-bookings')
+
+        // Send data to API directly as parameters
+        // axios.post('http://localhost:8083/ticket-bookings', {
+        //     screeningId: selectedScreening.id,
+        //     paymentInfo: {
+        //         cardNumber: formData.cardNumber,
+        //         expiryDate: formData.expiryDate,
+        //         cvv: formData.cvv
+        //     },
+        //     transactionDate: transactionDate,
+        //     totalPrice: totalPrice,
+        //     seats: selectedSeatIds
+        // })
+        //     .then(response => {
+        //         console.log('Purchase successful:', response.data);
+        //         onPurchase(response.data); // Pass the successful purchase data
+        //         proceedToReceipt(true);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error making purchase:', error);
+        //         // alert('Error making purchase. Please try again.');
+        //     });
     };
 
     // Autofill form when paymentInfo changes

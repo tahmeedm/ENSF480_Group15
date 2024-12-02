@@ -35,7 +35,7 @@ public class Receipt {
 		this.totalPrice = 0;
 	}
 
-	public Receipt(PaymentInfo paymentInfo, String transactionDate, ArrayList<Seat> seatList, float totalPrice) {
+	public Receipt(PaymentInfo paymentInfo, String transactionDate, float totalPrice) {
 		this.paymentInfo = paymentInfo;
 		this.transactionDate = transactionDate;
 		this.totalPrice = totalPrice;
