@@ -29,6 +29,7 @@ const groupScreeningsByMovieAndTheater = (screenings) => {
 
 function MovieSelection({ currentTheater, onMovieSelect, onBack, setScreenings }) {
     const [filteredMovies, setFilteredMovies] = useState([]);
+    const [allMovies, setAllMovies] = useState([]);  // State for the original movie list
     const [loading, setLoading] = useState(true);  // State for loading
     const [error, setError] = useState(null);      // State for error handling
 
@@ -43,7 +44,8 @@ function MovieSelection({ currentTheater, onMovieSelect, onBack, setScreenings }
                 const response = await axios.get(`http://localhost:8083/screenings/theatre/${currentTheater.id}`);
                 console.log('Response data:', response.data);
                 const groupedMovies = groupScreeningsByMovieAndTheater(response.data);
-                setFilteredMovies(groupedMovies);
+                setAllMovies(groupedMovies);  // Save the original list of movies
+                setFilteredMovies(groupedMovies);  // Initialize filtered list
             } catch (err) {
                 console.error('Error fetching screenings:', err);
                 setError('Failed to load screenings. Please try again later.');
@@ -64,10 +66,14 @@ function MovieSelection({ currentTheater, onMovieSelect, onBack, setScreenings }
     };
 
     const handleSearch = (query) => {
-        const filtered = filteredMovies.filter((movie) =>
-            movie.name.toLowerCase().includes(query.toLowerCase())
-        );
-        setFilteredMovies(filtered);
+        if (query === '') {
+            setFilteredMovies(allMovies);  // If the search is cleared, reset to all movies
+        } else {
+            const filtered = allMovies.filter((movie) =>
+                movie.name.toLowerCase().includes(query.toLowerCase())
+            );
+            setFilteredMovies(filtered);  // Set filtered list based on the query
+        }
     };
 
     if (loading) {
