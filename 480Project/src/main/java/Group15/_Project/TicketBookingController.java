@@ -53,6 +53,9 @@ public class TicketBookingController {
     @Autowired
     private ReceiptRepository receiptRepository;
 
+    @Autowired
+    private SeatRepository seatRepository;
+
     public TicketBookingController(TicketBookingService ticketBookingService) {
         this.ticketBookingService = ticketBookingService;
     }
@@ -136,7 +139,7 @@ public class TicketBookingController {
         
             // Save the TicketBooking entity
             System.out.println("Screening found with ID: " + screening.getId());
-            ticketBookingService.createTicketBooking(ticketBooking, (long) screening.getId());
+            ticketBookingService.createTicketBooking(ticketBooking, (long) screening.getId(), (List<Seat>) ticketBooking.getSeats());
             System.out.println("TicketBooking created with ID: " + ticketBooking.getId());
             return new ResponseEntity<>(ticketBooking, HttpStatus.CREATED);
         } else {

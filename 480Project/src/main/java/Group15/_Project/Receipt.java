@@ -26,23 +26,18 @@ public class Receipt {
 	@Column(name = "transaction_date", nullable = false)
 	private String transactionDate;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Seat> seatList = new ArrayList<>();
-
 	@Column(name = "total_price", nullable = false)
 	private float totalPrice;
 
 	public Receipt() {
 		this.paymentInfo = null;
 		this.transactionDate = null;
-		this.seatList = null;
 		this.totalPrice = 0;
 	}
 
 	public Receipt(PaymentInfo paymentInfo, String transactionDate, ArrayList<Seat> seatList, float totalPrice) {
 		this.paymentInfo = paymentInfo;
 		this.transactionDate = transactionDate;
-		this.seatList = seatList;
 		this.totalPrice = totalPrice;
 	}
 
@@ -52,10 +47,6 @@ public class Receipt {
 
 	public String getTransactionDate() {
 		return transactionDate;
-	}
-
-	public List<Seat> getSeatList() {
-		return seatList;
 	}
 
 	public float getTotalPrice() {
@@ -68,10 +59,6 @@ public class Receipt {
 
 	public void setTransactionDate(String transactionDate) {
 		this.transactionDate = transactionDate;
-	}
-
-	public void setSeatList(List<Seat> seatList) {
-		this.seatList = seatList;
 	}
 
 	public void setTotalPrice(float totalPrice) {
