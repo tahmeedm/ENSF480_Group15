@@ -26,7 +26,7 @@ public class Receipt {
 	@Column(name = "transaction_date", nullable = false)
 	private String transactionDate;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.PERSIST)
 	private List<Seat> seatList = new ArrayList<>();
 
 	@Column(name = "total_price", nullable = false)

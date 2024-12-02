@@ -35,22 +35,21 @@ public class TicketBookingService {
     }
 
     public TicketBooking createTicketBooking(TicketBooking ticketBooking, Long screeningId) {
-        Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
-        if (optionalScreening.isPresent()) {
-            Screening screening = optionalScreening.get();
-            ticketBooking.setScreening(screening);
-            try {
-                TicketBooking savedTicketBooking = ticketBookingRepository.save(ticketBooking); // Save ticket booking with linked screening
-                System.out.println("Returning ticket booking with ID: " + savedTicketBooking.getId() + " and Screening ID: " + screeningId);
-                return savedTicketBooking;
-            } catch (Exception e) {
-                System.out.println("An error occurred while saving the ticket booking: " + e.getMessage());
-                return null;
-            }
-        } else {
-            throw new RuntimeException("Screening not found with ID: " + screeningId);
+    Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
+    if (optionalScreening.isPresent()) {
+        Screening screening = optionalScreening.get();
+        ticketBooking.setScreening(screening);
+        try {
+            TicketBooking savedTicketBooking = ticketBookingRepository.save(ticketBooking);
+            return savedTicketBooking;
+        } catch (Exception e) {
+            System.out.println("Error saving TicketBooking: " + e.getMessage());
+            throw new RuntimeException("Error saving TicketBooking");
         }
+    } else {
+        throw new RuntimeException("Screening not found with ID: " + screeningId);
     }
+}
 
     public TicketBooking updateTicketBooking(Long id, TicketBooking ticketBookingDetails) {
         if (ticketBookingRepository.existsById(id)) {

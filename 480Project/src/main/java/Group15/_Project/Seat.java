@@ -28,7 +28,7 @@ public class Seat {
     private int seatNumber;
 
     @ManyToOne
-    @JoinColumn(name = "screening_id", nullable = false)
+    @JoinColumn(name = "screening_id")
     private Screening screening;
 
     // Default constructor
@@ -78,5 +78,13 @@ public class Seat {
 
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public Screening getScreeningId() {
+        return screening;
+    }
+
+    public void setScreeningId(Screening screening) {
+        this.screening = screening;
     }
 }

@@ -14,12 +14,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.Configuration;
 
 // Annotation to define this class as a Rest Controller
 @RestController
 // Base URL mapping for all requests handled by this controller
 @RequestMapping("/early-screenings")
 public class EarlyScreeningController {
+
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Apply CORS to all endpoints
+            .allowedOrigins("http://localhost:3000")  // Allow requests from your frontend (adjust for your frontend's URL)
+            .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allow the relevant HTTP methods
+            .allowedHeaders("*")  // Allow any headers
+            .allowCredentials(true);  // Allow cookies if needed
+    }
+}
 
     // Inject the EarlyScreeningService to handle business logic
     @Autowired
