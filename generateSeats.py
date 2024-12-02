@@ -26,7 +26,7 @@ def generate_seats_data(total_seats=1000, price_range=(15, 50)):
         price = screening_prices[screening_id]
         
         # Create the SQL insert statement for the current seat
-        seat_statement = f"INSERT INTO seats (id, price, seat_number, registered_user_id) VALUES ({seat_id}, {price}, {seat_number}, {registered_user_id});"
+        seat_statement = f"INSERT INTO seats (id, price, seat_number, registered_user_id, screening_id) VALUES ({seat_id}, {price}, {seat_number}, {registered_user_id},{int(seat_id/100)+1});"
         seat_statements.append(seat_statement)
         
         seat_id += 1
